@@ -51,6 +51,7 @@ Some features require additional beta headers:
 | MCP Connector | `anthropic-beta: mcp-client-2025-11-20` |
 | Computer Use | `anthropic-beta: computer-use-2025-01-24` |
 | Memory Tool | `anthropic-beta: context-management-2025-06-27` |
+| Agent Skills | `anthropic-beta: code-execution-2025-08-25,skills-2025-10-02` |
 
 ### Standard Request Template
 
@@ -513,6 +514,39 @@ Cross-conversation memory for persistent context.
 
 ---
 
+### Agent Skills
+
+Modular capabilities for document generation (Excel, PowerPoint, Word, PDF).
+
+**Beta Headers Required:** `anthropic-beta: code-execution-2025-08-25,skills-2025-10-02`
+
+```bash
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250514",
+    "max_tokens": 4096,
+    "container": {
+      "skills": [
+        {"type": "anthropic", "skill_id": "xlsx", "version": "latest"}
+      ]
+    },
+    "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
+    "messages": [{"role": "user", "content": "Create a budget spreadsheet"}]
+  }'
+```
+
+**Pre-built Skills:** `pptx` (PowerPoint), `xlsx` (Excel), `docx` (Word), `pdf`
+
+**Limits:** Up to 8 skills per request. Download files via Files API.
+
+> **Detailed example:** [examples/example-19-agent-skills.md](examples/example-19-agent-skills.md)
+
+---
+
 ## Token Counting
 
 **Endpoint:** `POST /v1/messages/count_tokens`
@@ -641,6 +675,7 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 | 16 | [MCP Connector](examples/example-16-mcp-connector.md) | Model Context Protocol integration |
 | 17 | [Computer Use](examples/example-17-computer-use.md) | Desktop automation |
 | 18 | [Memory Tool](examples/example-18-memory-tool.md) | Cross-conversation memory |
+| 19 | [Agent Skills](examples/example-19-agent-skills.md) | Document generation (Excel, PowerPoint, Word, PDF) |
 
 ---
 
