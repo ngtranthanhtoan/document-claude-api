@@ -48,15 +48,23 @@ Define an explicit approval tool that Claude must use before sensitive actions.
 ### Request
 
 ```bash
+# Define system prompt for better readability
+HITL_SYSTEM_PROMPT=$(cat <<'EOF'
+You are a helpful assistant that can perform actions on behalf of the user. IMPORTANT: For any action that modifies data, sends communications, or involves money, you MUST first use the request_approval tool and wait for approval before proceeding. Never execute sensitive actions without explicit approval.
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 2048,
-    "system": "You are a helpful assistant that can perform actions on behalf of the user. IMPORTANT: For any action that modifies data, sends communications, or involves money, you MUST first use the request_approval tool and wait for approval before proceeding. Never execute sensitive actions without explicit approval.",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$HITL_SYSTEM_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 2048,
+      system: $system,
+      tools: [
       {
         "name": "request_approval",
         "description": "Request human approval before performing a sensitive action. Use this before any action that modifies data, sends messages, or involves financial transactions.",
@@ -130,13 +138,13 @@ curl https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "Please send an email to the team at team@company.com announcing that the server maintenance is scheduled for tonight at 10 PM."
+        role: "user",
+        content: "Please send an email to the team at team@company.com announcing that the server maintenance is scheduled for tonight at 10 PM."
       }
     ]
-  }'
+  }')"
 ```
 
 ### Response (Requests Approval)
@@ -254,15 +262,26 @@ Require a confirmation code for high-value transactions.
 ### Request
 
 ```bash
+# Define financial assistant system prompt for better readability
+FINANCIAL_PROMPT=$(cat <<'EOF'
+You are a financial assistant. For any transaction over $100, you must:
+1. Use get_confirmation_code to generate a code
+2. Wait for the user to confirm the code
+3. Only then execute the transaction with the confirmed code
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 2048,
-    "system": "You are a financial assistant. For any transaction over $100, you must:\n1. Use get_confirmation_code to generate a code\n2. Wait for the user to confirm the code\n3. Only then execute the transaction with the confirmed code",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$FINANCIAL_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 2048,
+      system: $system,
+      tools: [
       {
         "name": "get_confirmation_code",
         "description": "Generate a confirmation code for high-value transactions. The code must be verified before proceeding.",
@@ -291,13 +310,13 @@ curl https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "Transfer $500 to account 1234-5678 for the consulting invoice"
+        role: "user",
+        content: "Transfer $500 to account 1234-5678 for the consulting invoice"
       }
     ]
-  }'
+  }')"
 ```
 
 ### Flow
@@ -316,15 +335,29 @@ Different actions require different approval levels.
 ### Request
 
 ```bash
+# Define multi-level approval system prompt for better readability
+APPROVAL_LEVELS_PROMPT=$(cat <<'EOF'
+You are an operations assistant. Different actions require different approval levels:
+
+- LEVEL 1 (Team Lead): Actions under $1000, non-critical systems
+- LEVEL 2 (Manager): Actions $1000-$10000, production systems
+- LEVEL 3 (Director): Actions over $10000, customer data, security changes
+
+Always request the appropriate approval level.
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 2048,
-    "system": "You are an operations assistant. Different actions require different approval levels:\n\n- LEVEL 1 (Team Lead): Actions under $1000, non-critical systems\n- LEVEL 2 (Manager): Actions $1000-$10000, production systems\n- LEVEL 3 (Director): Actions over $10000, customer data, security changes\n\nAlways request the appropriate approval level.",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$APPROVAL_LEVELS_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 2048,
+      system: $system,
+      tools: [
       {
         "name": "request_approval",
         "description": "Request approval at the specified level",
@@ -352,13 +385,13 @@ curl https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "We need to update the pricing for all products by 10%"
+        role: "user",
+        content: "We need to update the pricing for all products by 10%"
       }
     ]
-  }'
+  }')"
 ```
 
 ---

@@ -43,19 +43,35 @@
 ### Request
 
 ```bash
+# Define system prompt for better readability
+RESEARCH_SYSTEM_PROMPT=$(cat <<'EOF'
+You are an expert research analyst. Your role is to:
+
+1. PLAN: Break down research questions into specific queries
+2. GATHER: Use tools to collect information from multiple sources
+3. VERIFY: Cross-reference facts across sources
+4. SYNTHESIZE: Combine findings into coherent insights
+5. REPORT: Present findings with proper citations
+
+Always think through your research strategy before starting. Save important findings as you go.
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-opus-4-5-20251101",
-    "max_tokens": 16000,
-    "thinking": {
-      "type": "enabled",
-      "budget_tokens": 10000
-    },
-    "system": "You are an expert research analyst. Your role is to:\n\n1. PLAN: Break down research questions into specific queries\n2. GATHER: Use tools to collect information from multiple sources\n3. VERIFY: Cross-reference facts across sources\n4. SYNTHESIZE: Combine findings into coherent insights\n5. REPORT: Present findings with proper citations\n\nAlways think through your research strategy before starting. Save important findings as you go.",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$RESEARCH_SYSTEM_PROMPT" \
+    '{
+      model: "claude-opus-4-5-20251101",
+      max_tokens: 16000,
+      thinking: {
+        type: "enabled",
+        budget_tokens: 10000
+      },
+      system: $system,
+      tools: [
       {
         "name": "web_search",
         "description": "Search the web for current information",
@@ -120,13 +136,13 @@ curl https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "Research the current state of quantum computing commercialization. I need to understand:\n1. Major players and their approaches\n2. Current practical applications\n3. Timeline predictions for mainstream adoption\n\nProvide a comprehensive report with sources."
+        role: "user",
+        content: "Research the current state of quantum computing commercialization. I need to understand:\n1. Major players and their approaches\n2. Current practical applications\n3. Timeline predictions for mainstream adoption\n\nProvide a comprehensive report with sources."
       }
     ]
-  }'
+  }')"
 ```
 
 ### Response with Thinking

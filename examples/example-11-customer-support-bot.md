@@ -45,15 +45,35 @@
 ### Request
 
 ```bash
+# Define system prompt for better readability
+SUPPORT_SYSTEM_PROMPT=$(cat <<'EOF'
+You are a friendly and helpful customer support agent for TechStore, an online electronics retailer. Follow these guidelines:
+
+1. TONE: Be warm, empathetic, and professional. Acknowledge customer frustrations.
+2. EFFICIENCY: Get to solutions quickly while being thorough.
+3. TOOLS: Use available tools to look up information before responding.
+4. ESCALATION: If a customer asks for a manager or you cannot resolve the issue, use the escalate_to_human tool.
+5. REFUNDS: You can process refunds up to $100. For larger amounts, escalate.
+6. PRIVACY: Never share full account details. Only confirm last 4 digits of payment methods.
+
+Store policies:
+- 30-day return policy
+- Free shipping on orders over $50
+- Price match within 14 days of purchase
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 2048,
-    "system": "You are a friendly and helpful customer support agent for TechStore, an online electronics retailer. Follow these guidelines:\n\n1. TONE: Be warm, empathetic, and professional. Acknowledge customer frustrations.\n2. EFFICIENCY: Get to solutions quickly while being thorough.\n3. TOOLS: Use available tools to look up information before responding.\n4. ESCALATION: If a customer asks for a manager or you cannot resolve the issue, use the escalate_to_human tool.\n5. REFUNDS: You can process refunds up to $100. For larger amounts, escalate.\n6. PRIVACY: Never share full account details. Only confirm last 4 digits of payment methods.\n\nStore policies:\n- 30-day return policy\n- Free shipping on orders over $50\n- Price match within 14 days of purchase",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$SUPPORT_SYSTEM_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 2048,
+      system: $system,
+      tools: [
       {
         "name": "lookup_order",
         "description": "Look up order details by order ID or customer email",
@@ -130,13 +150,13 @@ curl https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "Hi, I ordered a laptop 2 weeks ago (order #ORD-12345) and it still has not arrived. This is really frustrating! My email is john@example.com"
+        role: "user",
+        content: "Hi, I ordered a laptop 2 weeks ago (order #ORD-12345) and it still has not arrived. This is really frustrating! My email is john@example.com"
       }
     ]
-  }'
+  }')"
 ```
 
 ### Response (Tool Use)
@@ -271,21 +291,33 @@ Adjust tone based on customer emotion.
 ### Frustrated Customer
 
 ```bash
+# Define sentiment-aware system prompt for better readability
+SENTIMENT_PROMPT=$(cat <<'EOF'
+You are a customer support agent. Detect customer sentiment and adjust your response accordingly:
+- Frustrated/Angry: Lead with empathy, acknowledge feelings, prioritize solutions
+- Confused: Be patient, use simple language, offer step-by-step guidance
+- Happy: Match their energy, thank them, ask if there is anything else
+- Neutral: Be efficient and helpful
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 2048,
-    "system": "You are a customer support agent. Detect customer sentiment and adjust your response accordingly:\n- Frustrated/Angry: Lead with empathy, acknowledge feelings, prioritize solutions\n- Confused: Be patient, use simple language, offer step-by-step guidance\n- Happy: Match their energy, thank them, ask if there is anything else\n- Neutral: Be efficient and helpful",
-    "messages": [
-      {
-        "role": "user",
-        "content": "THIS IS THE THIRD TIME IM CONTACTING YOU!!! Nobody can figure out why my account is locked!!! I have been a customer for 5 YEARS and this is how you treat me?!"
-      }
-    ]
-  }'
+  -d "$(jq -n \
+    --arg system "$SENTIMENT_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 2048,
+      system: $system,
+      messages: [
+        {
+          role: "user",
+          content: "THIS IS THE THIRD TIME IM CONTACTING YOU!!! Nobody can figure out why my account is locked!!! I have been a customer for 5 YEARS and this is how you treat me?!"
+        }
+      ]
+    }')"
 ```
 
 ### Response (Empathy-First)

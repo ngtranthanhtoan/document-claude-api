@@ -43,16 +43,30 @@
 ### Request
 
 ```bash
+# Define system prompt for better readability
+SYSTEM_PROMPT=$(cat <<'EOF'
+You are an expert coding assistant. When writing code:
+1. Explain your approach first
+2. Write clean, well-commented code
+3. Use tools to test your code
+4. Handle errors gracefully
+
+Always prefer to run and verify code before presenting it as final.
+EOF
+)
+
 curl -N https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 4096,
-    "stream": true,
-    "system": "You are an expert coding assistant. When writing code:\n1. Explain your approach first\n2. Write clean, well-commented code\n3. Use tools to test your code\n4. Handle errors gracefully\n\nAlways prefer to run and verify code before presenting it as final.",
-    "tools": [
+  -d "$(jq -n \
+    --arg system "$SYSTEM_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 4096,
+      stream: true,
+      system: $system,
+      tools: [
       {
         "name": "read_file",
         "description": "Read contents of a file in the workspace",
@@ -113,13 +127,13 @@ curl -N https://api.anthropic.com/v1/messages \
         }
       }
     ],
-    "messages": [
+    messages: [
       {
-        "role": "user",
-        "content": "Write a Python script that fetches the top 10 Hacker News stories and saves them to a JSON file. Test it to make sure it works."
+        role: "user",
+        content: "Write a Python script that fetches the top 10 Hacker News stories and saves them to a JSON file. Test it to make sure it works."
       }
     ]
-  }'
+  }')"
 ```
 
 ### Streaming Response Flow
@@ -222,21 +236,36 @@ Claude will:
 ### Request
 
 ```bash
+# Define system prompt for better readability
+REVIEW_PROMPT=$(cat <<'EOF'
+You are a senior code reviewer. For each code submission:
+1. Check for bugs and edge cases
+2. Evaluate code style and best practices
+3. Assess security vulnerabilities
+4. Suggest performance improvements
+5. Rate the overall quality (1-10)
+
+Provide specific, actionable feedback.
+EOF
+)
+
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
-  -d '{
-    "model": "claude-sonnet-4-5-20250514",
-    "max_tokens": 4096,
-    "system": "You are a senior code reviewer. For each code submission:\n1. Check for bugs and edge cases\n2. Evaluate code style and best practices\n3. Assess security vulnerabilities\n4. Suggest performance improvements\n5. Rate the overall quality (1-10)\n\nProvide specific, actionable feedback.",
-    "messages": [
+  -d "$(jq -n \
+    --arg system "$REVIEW_PROMPT" \
+    '{
+      model: "claude-sonnet-4-5-20250514",
+      max_tokens: 4096,
+      system: $system,
+      messages: [
       {
-        "role": "user",
-        "content": "Review this Python code:\n\n```python\nimport os\nimport sqlite3\n\ndef get_user(username):\n    conn = sqlite3.connect(\"users.db\")\n    cursor = conn.cursor()\n    query = f\"SELECT * FROM users WHERE username = \"{username}\"\"\n    cursor.execute(query)\n    result = cursor.fetchone()\n    return result\n\ndef delete_file(filename):\n    os.system(f\"rm {filename}\")\n```"
+        role: "user",
+        content: "Review this Python code:\n\n```python\nimport os\nimport sqlite3\n\ndef get_user(username):\n    conn = sqlite3.connect(\"users.db\")\n    cursor = conn.cursor()\n    query = f\"SELECT * FROM users WHERE username = \"{username}\"\"\n    cursor.execute(query)\n    result = cursor.fetchone()\n    return result\n\ndef delete_file(filename):\n    os.system(f\"rm {filename}\")\n```"
       }
     ]
-  }'
+  }')"
 ```
 
 ---
