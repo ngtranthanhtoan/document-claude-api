@@ -677,6 +677,61 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 | 18 | [Memory Tool](examples/example-18-memory-tool.md) | Cross-conversation memory |
 | 19 | [Agent Skills](examples/example-19-agent-skills.md) | Document generation (Excel, PowerPoint, Word, PDF) |
 | 20 | [Deep Agent](examples/example-20-deep-agent.md) | Planning, delegation, multi-agent orchestration |
+| 21 | [Full-Stack Autonomous Agent](examples/example-21-full-stack-agent.md) | All tools combined: search, fetch, bash, editor, code exec, skills, computer use, streaming |
+
+---
+
+## TypeScript SDK Examples
+
+The same 21 examples above are also available as **TypeScript SDK** implementations using [`@anthropic-ai/sdk`](https://github.com/anthropics/anthropic-sdk-typescript). These provide native TypeScript patterns including typed responses, Zod helpers, streaming iterators, and automatic tool execution.
+
+### Getting Started
+
+```bash
+npm install @anthropic-ai/sdk
+export ANTHROPIC_API_KEY="sk-ant-api03-..."
+```
+
+### Beginner
+
+| # | Example | SDK Highlights |
+|---|---------|----------------|
+| 01 | [Structured Output](typescript-client-sdk-examples/example-01-structured-output.md) | `messages.parse()` + `zodOutputFormat()` |
+| 02 | [Streaming](typescript-client-sdk-examples/example-02-streaming.md) | `messages.stream()` + `.on("text", ...)` |
+| 03 | [PDF Processing](typescript-client-sdk-examples/example-03-pdf-processing.md) | `fs.readFileSync()` for base64 encoding |
+| 04 | [Citations](typescript-client-sdk-examples/example-04-citations.md) | Typed citation content blocks |
+| 05 | [Files API](typescript-client-sdk-examples/example-05-files-api.md) | `client.beta.files.upload()` + `toFile()` |
+
+### Intermediate
+
+| # | Example | SDK Highlights |
+|---|---------|----------------|
+| 06 | [Tool Use Basics](typescript-client-sdk-examples/example-06-tool-use-basics.md) | `zodTool()` for type-safe tools |
+| 07 | [Vision Analysis](typescript-client-sdk-examples/example-07-vision-analysis.md) | Image content blocks (base64/URL) |
+| 08 | [RAG Knowledge Base](typescript-client-sdk-examples/example-08-rag-knowledge-base.md) | `cache_control` + usage stats |
+| 09 | [Batch Processing](typescript-client-sdk-examples/example-09-batch-processing.md) | `batches.create()` + async iterables |
+| 10 | [Data Extraction](typescript-client-sdk-examples/example-10-data-extraction.md) | Zod structured output + vision |
+
+### Advanced
+
+| # | Example | SDK Highlights |
+|---|---------|----------------|
+| 11 | [Customer Support Bot](typescript-client-sdk-examples/example-11-customer-support-bot.md) | Multi-turn + tools + conversation state |
+| 12 | [Human in the Loop](typescript-client-sdk-examples/example-12-human-in-the-loop.md) | `readline/promises` approval flow |
+| 13 | [Agentic Tool Loop](typescript-client-sdk-examples/example-13-agentic-tool-loop.md) | Manual loop + `toolRunner()` helper |
+| 14 | [Research Agent](typescript-client-sdk-examples/example-14-research-agent.md) | Extended thinking + multi-tool |
+| 15 | [Coding Assistant](typescript-client-sdk-examples/example-15-coding-assistant.md) | Streaming inside agentic loop |
+
+### Expert
+
+| # | Example | SDK Highlights |
+|---|---------|----------------|
+| 16 | [MCP Connector](typescript-client-sdk-examples/example-16-mcp-connector.md) | `beta.messages.create()` + `mcp_servers` |
+| 17 | [Computer Use](typescript-client-sdk-examples/example-17-computer-use.md) | `computer_20241022` tool + `execSync` |
+| 18 | [Memory Tool](typescript-client-sdk-examples/example-18-memory-tool.md) | `memory_20250627` tool type |
+| 19 | [Agent Skills](typescript-client-sdk-examples/example-19-agent-skills.md) | `code_execution_20250825` + container skills |
+| 20 | [Deep Agent](typescript-client-sdk-examples/example-20-deep-agent.md) | Orchestrator + typed subagent functions |
+| 21 | [Full-Stack Autonomous Agent](typescript-client-sdk-examples/example-21-full-stack-agent.md) | All tool types + fine-grained streaming |
 
 ---
 
