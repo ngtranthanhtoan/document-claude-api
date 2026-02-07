@@ -676,6 +676,7 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 | 17 | [Computer Use](examples/example-17-computer-use.md) | Desktop automation |
 | 18 | [Memory Tool](examples/example-18-memory-tool.md) | Cross-conversation memory |
 | 19 | [Agent Skills](examples/example-19-agent-skills.md) | Document generation (Excel, PowerPoint, Word, PDF) |
+| 20 | [Deep Agent](examples/example-20-deep-agent.md) | Planning, delegation, multi-agent orchestration |
 
 ---
 
