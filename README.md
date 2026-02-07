@@ -688,6 +688,18 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 - [Prompt Library](https://docs.anthropic.com/en/prompt-library)
 - [Anthropic Cookbook](https://github.com/anthropics/anthropic-cookbook)
 
+### Deep Agent References
+
+| Resource | Description |
+|----------|-------------|
+| [DeepAgent Paper (arXiv)](https://arxiv.org/abs/2510.21618) | WWW 2026 — General reasoning agent with scalable toolsets and memory folding |
+| [DeepAgent GitHub (RUC-NLPIR)](https://github.com/RUC-NLPIR/DeepAgent) | Source code for the DeepAgent research paper |
+| [Abacus AI Deep Agent](https://deepagent.abacus.ai/) | Commercial deep agent for apps, reports, presentations, and enterprise tasks |
+| [LangChain Deep Agents (GitHub)](https://github.com/langchain-ai/deepagents) | Agent harness with planning, filesystem, and subagent spawning on LangGraph |
+| [OpenAI Deep Research](https://openai.com/index/introducing-deep-research/) | Multi-step research agent with extended reasoning |
+| [Gemini Deep Research](https://ai.google.dev/gemini-api/docs/deep-research) | Google's deep research agent via the Gemini API |
+| [Anthropic Opus 4.6 Agent Teams (TechCrunch)](https://techcrunch.com/2026/02/05/anthropic-releases-opus-4-6-with-new-agent-teams/) | Anthropic's agent teams architecture with Opus 4.6 |
+
 ---
 
 *Last updated: 2025*
