@@ -11,7 +11,7 @@ async function main() {
   printHeader("Method 1: PDF from URL");
 
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {
@@ -44,7 +44,7 @@ async function main() {
 
   // Since we may not have a local PDF, demonstrate with a text document
   const msg2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {
@@ -93,7 +93,7 @@ Q4 guidance: $48-50M revenue with continued margin expansion.`,
   printHeader("Method 3: Contract Analysis (Structured Extraction)");
 
   const msg3 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     system: "You are a data extraction assistant. Always respond with valid JSON. No markdown formatting.",
     messages: [
@@ -174,7 +174,7 @@ Governing Law: State of Delaware`,
         const pdfBase64 = fs.readFileSync(resolvedPath).toString("base64");
 
         const pdfMsg = await client.messages.create({
-          model: "claude-sonnet-4-5-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 4096,
           messages: [
             {

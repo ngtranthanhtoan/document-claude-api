@@ -65,7 +65,7 @@ Architecture:
   try {
     const response = await client.beta.messages.create(
       {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 1024,
         tools: [
           {
@@ -137,7 +137,7 @@ async function computerUseLoop(task: string) {
 
   for (let i = 0; i < MAX_ITERATIONS; i++) {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       betas: ["computer-use-2025-01-24"],
       // IMPORTANT: disable parallel tool use for sequential actions

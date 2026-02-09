@@ -12,7 +12,7 @@ const TODO_FILE = path.join(WORKSPACE, ".todos.json");
 if (!fs.existsSync(WORKSPACE)) fs.mkdirSync(WORKSPACE, { recursive: true });
 if (!fs.existsSync(TODO_FILE)) fs.writeFileSync(TODO_FILE, "[]");
 
-const MODEL = "claude-sonnet-4-5-20250514";
+const MODEL = "claude-sonnet-4-5-20250929";
 const MAX_ITERATIONS = 15;
 const SUBAGENT_MAX_ITERATIONS = 5;
 

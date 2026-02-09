@@ -94,7 +94,7 @@ async function chat(
 
   for (let i = 0; i < 5; i++) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system:
         "You are a personal assistant with persistent memory. Use the memory tool to:\n- Store important information the user shares\n- Retrieve previously stored information\n- Remember preferences, projects, and context across conversations\n\nAlways proactively store key information and check memory when relevant.",

@@ -37,7 +37,7 @@ async function main() {
   printHeader("Method 1: Define Tools and Send Request");
 
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tools: [weatherTool],
     messages: [{ role: "user", content: "What is the weather like in Paris right now?" }],
@@ -55,7 +55,7 @@ async function main() {
   ];
 
   const response1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tools: [weatherTool],
     messages,
@@ -85,7 +85,7 @@ async function main() {
     messages.push({ role: "user", content: toolResults });
 
     const response2 = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       tools: [weatherTool],
       messages,
@@ -103,7 +103,7 @@ async function main() {
   printHeader("Method 3: Built-in Web Search Tool");
 
   const msg3 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     tools: [
       {
@@ -132,7 +132,7 @@ async function main() {
   ];
 
   const resp4 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tools: [weatherTool],
     messages: msgs4,
@@ -158,7 +158,7 @@ async function main() {
     msgs4.push({ role: "user", content: toolResults });
 
     const final = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       tools: [weatherTool],
       messages: msgs4,

@@ -9,7 +9,7 @@ async function main() {
   printHeader("Method 1: Basic Citations with Text Document");
 
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     citations: { enabled: true },
     messages: [
@@ -48,7 +48,7 @@ async function main() {
   printHeader("Method 2: Multiple Document Citations");
 
   const msg2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     citations: { enabled: true },
     messages: [
@@ -95,7 +95,7 @@ async function main() {
   printHeader("Method 3: Legal Document Analysis");
 
   const msg3 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 8000,
     citations: { enabled: true },
     messages: [
@@ -135,7 +135,7 @@ async function main() {
   printHeader("Method 4: Extracting Citations Programmatically");
 
   const msg4 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     citations: { enabled: true },
     messages: [

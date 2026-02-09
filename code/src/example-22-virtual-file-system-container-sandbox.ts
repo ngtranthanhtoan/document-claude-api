@@ -34,7 +34,7 @@ When Claude executes code, three layers work together:
   try {
     const response = await client.beta.messages.create(
       {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         tools: [
           {
@@ -78,7 +78,7 @@ When Claude executes code, three layers work together:
 
       const response2 = await client.beta.messages.create(
         {
-          model: "claude-sonnet-4-5-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 4096,
           container: { id: containerId },
           tools: [

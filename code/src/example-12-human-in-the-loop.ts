@@ -125,7 +125,7 @@ async function runWithApproval(userMessage: string): Promise<void> {
 
   for (let i = 0; i < 10; i++) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: systemPrompt,
       tools,

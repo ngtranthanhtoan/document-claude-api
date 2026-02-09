@@ -77,7 +77,7 @@ async function askQuestion(question: string): Promise<void> {
   console.log(`Q: ${question}`);
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system: systemPrompt,
     messages: [{ role: "user", content: question }],
@@ -127,7 +127,7 @@ async function main() {
   ];
 
   const response1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system: systemPrompt,
     messages,
@@ -149,7 +149,7 @@ async function main() {
   });
 
   const response2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system: systemPrompt,
     messages,

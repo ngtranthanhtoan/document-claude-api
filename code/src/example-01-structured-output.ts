@@ -11,7 +11,7 @@ async function main() {
   printHeader("Method 1: System Prompt with JSON Schema");
 
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system:
       "You are a data extraction assistant. Always respond with valid JSON matching the requested schema. Never include markdown formatting, explanations, or any text outside the JSON object.",
@@ -44,7 +44,9 @@ Requirements:
 
   const textBlock1 = msg1.content.find((block) => block.type === "text");
   if (textBlock1 && textBlock1.type === "text") {
-    const data = JSON.parse(textBlock1.text);
+    // Strip markdown code fences if present
+    const jsonStr = textBlock1.text.replace(/^```(?:json)?\n?/gm, "").replace(/```$/gm, "").trim();
+    const data = JSON.parse(jsonStr);
     printJSON(data);
   }
 
@@ -52,7 +54,7 @@ Requirements:
   printHeader("Method 2: Tool as Structured Output");
 
   const msg2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system:
       "You are a sentiment analysis system. Analyze the provided text and use the record_sentiment tool to output your analysis.",
@@ -105,7 +107,7 @@ Requirements:
   printHeader("Method 3: Forced Tool Choice (Guaranteed Structure)");
 
   const msg3 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tool_choice: { type: "tool", name: "extract_entities" },
     tools: [
@@ -170,9 +172,9 @@ Requirements:
   });
 
   const msg4 = await client.messages.parse({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
-    output_format: zodOutputFormat(JobPostingSchema, "job_posting"),
+    output_config: { format: zodOutputFormat(JobPostingSchema) },
     messages: [
       {
         role: "user",
@@ -202,7 +204,7 @@ Requirements:
   printHeader("Method 5: Enum Constraints for Classification");
 
   const msg5 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 500,
     tool_choice: { type: "tool", name: "classify_ticket" },
     tools: [

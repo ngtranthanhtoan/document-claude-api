@@ -29,9 +29,9 @@
     "all": "tsx src/run-all.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
+    "@anthropic-ai/sdk": "^0.74.0",
     "dotenv": "^16.4.7",
-    "zod": "^3.24.2"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/node": "^22.12.0",

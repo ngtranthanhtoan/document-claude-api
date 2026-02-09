@@ -25,7 +25,7 @@ Architecture:
 
   console.log("The MCP API call structure looks like this:\n");
   console.log(`client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [
@@ -42,7 +42,7 @@ Architecture:
 
   try {
     const response = await (client.beta.messages as any).create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       betas: ["mcp-client-2025-11-20"],
       mcp_servers: [
@@ -78,7 +78,7 @@ Architecture:
 
   console.log("You can connect to multiple MCP servers simultaneously:\n");
   console.log(`client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [

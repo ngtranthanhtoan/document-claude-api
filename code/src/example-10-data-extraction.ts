@@ -12,7 +12,7 @@ async function main() {
 
   // Since we don't have a real invoice image, use a text-based document
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     tool_choice: { type: "tool", name: "extract_invoice" },
     tools: [
@@ -124,9 +124,9 @@ Payment Terms: Net 30`,
   });
 
   const msg2 = await client.messages.parse({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
-    output_format: zodOutputFormat(InvoiceSchema, "invoice"),
+    output_config: { format: zodOutputFormat(InvoiceSchema) },
     messages: [
       {
         role: "user",
@@ -182,9 +182,9 @@ Payment Terms: Net 45`,
   });
 
   const msg3 = await client.messages.parse({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
-    output_format: zodOutputFormat(ContactSchema, "contact"),
+    output_config: { format: zodOutputFormat(ContactSchema) },
     messages: [
       {
         role: "user",
@@ -219,7 +219,7 @@ San Francisco, CA 94105`,
   printHeader("Method 4: Receipt Data Extraction");
 
   const msg4 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     tool_choice: { type: "tool", name: "extract_receipt" },
     tools: [

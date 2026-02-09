@@ -114,7 +114,7 @@ async function main() {
     console.log(`\n--- Turn ${i + 1} ---`);
 
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system:
         "You are an expert coding assistant. Write clean, well-typed TypeScript code. Use tools to write files and run code to verify your solutions work.",

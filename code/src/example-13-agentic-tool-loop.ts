@@ -121,7 +121,7 @@ async function main() {
 
   for (let i = 0; i < MAX_ITERATIONS; i++) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system:
         "You are a crypto research assistant. Use tools to gather data, analyze it, and produce reports. Always save your final report using the save_report tool.",

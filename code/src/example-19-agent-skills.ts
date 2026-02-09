@@ -26,7 +26,7 @@ Skills use the Code Execution tool with a container that has skill files pre-loa
   try {
     const response = await client.beta.messages.create(
       {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         container: {
           skills: [
@@ -99,7 +99,7 @@ Skills use the Code Execution tool with a container that has skill files pre-loa
   try {
     const response = await client.beta.messages.create(
       {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         container: {
           skills: [

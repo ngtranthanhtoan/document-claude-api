@@ -9,7 +9,7 @@ async function main() {
   printHeader("Method 1: URL-Based Image Analysis");
 
   const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     messages: [
       {
@@ -41,7 +41,7 @@ async function main() {
   printHeader("Method 2: Multiple Images via URL");
 
   const msg2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     messages: [
       {
@@ -79,7 +79,7 @@ async function main() {
   printHeader("Method 3: Accessibility Alt-Text Generation");
 
   const msg3 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 500,
     messages: [
       {
@@ -130,7 +130,7 @@ async function main() {
       } else {
         const imageBase64 = fs.readFileSync(resolvedPath).toString("base64");
         const msg = await client.messages.create({
-          model: "claude-sonnet-4-5-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 2048,
           messages: [
             {

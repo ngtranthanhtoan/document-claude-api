@@ -76,7 +76,7 @@ This document outlines the requirements for upgrading the authentication system 
 
   const msg1 = await client.beta.messages.create(
     {
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       messages: [
         {
@@ -110,7 +110,7 @@ This document outlines the requirements for upgrading the authentication system 
 
   const msg2 = await client.beta.messages.create(
     {
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       messages: [
         {

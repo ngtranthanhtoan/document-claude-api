@@ -9,7 +9,7 @@ async function main() {
   printHeader("Phase 1: Web Research (Built-in web_search)");
 
   const phase1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     tools: [
       {
@@ -37,7 +37,7 @@ async function main() {
 
   const phase2 = await client.beta.messages.create(
     {
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       tools: [
         {
@@ -129,7 +129,7 @@ async function main() {
 
   for (let i = 0; i < 8; i++) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system: "You are a research analyst. Use available tools to gather data, analyze it, and produce deliverables.",
       tools: customTools,
@@ -185,7 +185,7 @@ async function main() {
   printHeader("Phase 4: Fine-Grained Streaming");
 
   const stream = client.messages.stream({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     messages: [
       {

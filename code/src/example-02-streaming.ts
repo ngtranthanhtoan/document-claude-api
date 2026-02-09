@@ -9,7 +9,7 @@ async function main() {
   printHeader("Method 1: Basic Streaming with Event Callbacks");
 
   const stream1 = client.messages.stream({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Write a haiku about programming." }],
   });
@@ -25,7 +25,7 @@ async function main() {
   printHeader("Method 2: Streaming with for-await Iterator (SSE Events)");
 
   const stream2 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     stream: true,
     messages: [
@@ -61,7 +61,7 @@ async function main() {
   printHeader("Method 3: Streaming with Tool Use");
 
   const stream3 = client.messages.stream({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tools: [
       {
@@ -100,7 +100,7 @@ async function main() {
   printHeader("Method 4: Streaming with Extended Thinking");
 
   const stream4 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 8000,
     stream: true,
     thinking: { type: "enabled", budget_tokens: 5000 },
@@ -132,7 +132,7 @@ async function main() {
   printHeader("Method 5: Convenience Methods (finalText)");
 
   const stream5 = client.messages.stream({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Say hello in 3 languages!" }],
   });

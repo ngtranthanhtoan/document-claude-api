@@ -5,10 +5,11 @@
 ## Overview
 
 - **Difficulty**: Expert
-- **Features Used**: Custom Tool Definitions, Bash Tool (client), Text Editor Tool (client)
+- **Features Used**: Custom Tool Definitions, Local Skills, Bash Tool (client), Text Editor Tool (client)
 - **Beta Headers Required**: None
 - **Use Cases**:
   - Building domain-specific tool agents without containers
+  - Local skills — reusable instruction + script packages executed on your machine
   - Local development automation with bash + text_editor
   - Agentic code editing, testing, and deployment
   - CI/CD integration with Claude as a tool-using agent
@@ -394,6 +395,233 @@ fi
 
 ---
 
+## Local Skills
+
+Local Skills bundle instructions, scripts, and resources into a reusable package — similar to Anthropic's container-based skills (see [Example 19](example-19-agent-skills.md)), but executed entirely on your machine. Instead of uploading to the Skills API, you inject the skill's instructions into the `system` prompt and Claude uses `bash`/`text_editor` to run the scripts locally.
+
+### Anthropic Skills vs Local Skills
+
+| Aspect | Anthropic Skills (Example 19) | Local Skills (this pattern) |
+|--------|-------------------------------|----------------------------|
+| **Where skills run** | Anthropic container | Your machine |
+| **How skills load** | Upload via `/v1/skills` API | Read files, inject into `system` prompt |
+| **Execution tool** | `code_execution_20250825` | `bash_20250124` + `text_editor_20250728` |
+| **Beta required** | `skills-2025-10-02` | None |
+| **Runtime** | Python 3.11 only | Any language/runtime you have |
+| **Network access** | None | Full access |
+| **Script paths** | `/skills/{name}/src/...` | Absolute local paths |
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  1. SKILL LOADER (your code)                                      │
+│     Read SKILL.md → inject into system prompt                     │
+│     Read skill scripts → they stay on disk                        │
+│                                                                   │
+│  2. API CALL                                                      │
+│     system: "You have access to the data-validator skill..."      │
+│     tools: [bash, text_editor]                                    │
+│     messages: [{ user: "Validate this CSV" }]                     │
+│                                                                   │
+│  3. CLAUDE RESPONDS                                               │
+│     Uses bash to run: python /path/to/skills/data-validator/...   │
+│     Uses text_editor to read/write files                          │
+│                                                                   │
+│  4. YOU EXECUTE on your machine → return tool_result              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Local Skill Directory Structure
+
+```
+skills/
+├── data-validator/
+│   ├── SKILL.md              # Instructions for Claude
+│   ├── src/
+│   │   ├── validate.py       # Validation engine
+│   │   └── report.py         # Report generator
+│   └── schemas/
+│       ├── customer.json     # Customer data schema
+│       └── order.json        # Order data schema
+│
+└── test-runner/
+    ├── SKILL.md              # Instructions for Claude
+    └── src/
+        └── run.sh            # Test runner script
+```
+
+### SKILL.md Format for Local Execution
+
+The SKILL.md format is the same as Anthropic's container-based skills, but instructions reference **local paths** and tell Claude to use **bash** instead of `code_execution`.
+
+````markdown
+---
+name: data-validator
+description: Validate CSV, JSON, and Excel data against schemas. Use when the user wants to check data quality or enforce data contracts.
+---
+
+# Data Validator Skill
+
+## When to Use
+- User asks to validate, check, or audit a data file
+- User wants to enforce a schema on data
+- User needs a data quality report
+
+## How to Execute
+Run the validation script using bash:
+
+```bash
+python /home/user/skills/data-validator/src/validate.py \
+  --input <data_file> \
+  --schema /home/user/skills/data-validator/schemas/<schema>.json
+```
+
+## Available Scripts
+- `src/validate.py` — Main validation engine. Args: `--input`, `--schema`, `--format` (csv|json|xlsx)
+- `src/report.py` — Generate formatted report. Args: `--results` (JSON from validate.py)
+
+## Schema Format
+Schemas are JSON files in `schemas/`:
+
+```json
+{
+  "columns": {
+    "email": {"type": "string", "pattern": "^[^@]+@[^@]+$", "required": true},
+    "age": {"type": "integer", "min": 0, "max": 150},
+    "status": {"type": "string", "enum": ["active", "inactive"]}
+  }
+}
+```
+
+## Example Workflow
+1. Run validation: `python .../validate.py --input /tmp/data.csv --schema .../schemas/customer.json`
+2. If errors found, generate report: `python .../report.py --results <validation_output>`
+3. Use text_editor to fix the data file if needed
+4. Re-run validation to confirm fixes
+````
+
+### Skill Loader Script
+
+The skill loader reads SKILL.md files and injects them into the `system` prompt.
+
+```bash
+#!/bin/bash
+
+# Load one or more local skills into a system prompt
+SKILLS_DIR="/home/user/skills"
+
+load_skill() {
+  local skill_name="$1"
+  local skill_path="$SKILLS_DIR/$skill_name/SKILL.md"
+
+  if [ ! -f "$skill_path" ]; then
+    echo "Error: Skill not found: $skill_path" >&2
+    return 1
+  fi
+
+  cat "$skill_path"
+}
+
+# Build system prompt from multiple skills
+build_system_prompt() {
+  local prompt="You have access to the following local skills. Use bash to execute their scripts.\n\n"
+
+  for skill_name in "$@"; do
+    prompt+="---\n\n"
+    prompt+="$(load_skill "$skill_name")\n\n"
+  done
+
+  echo "$prompt"
+}
+
+# Build the system prompt
+SYSTEM_PROMPT=$(build_system_prompt "data-validator" "test-runner")
+
+# Make the API call with skills injected
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d "$(jq -n \
+    --arg system "$SYSTEM_PROMPT" \
+    '{
+      "model": "claude-sonnet-4-5-20250514",
+      "max_tokens": 4096,
+      "system": $system,
+      "tools": [
+        {"type": "bash_20250124", "name": "bash"},
+        {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"}
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Validate the data in /tmp/customers.csv against the customer schema and generate a report."
+        }
+      ]
+    }')"
+```
+
+### Claude Uses the Skill
+
+Claude reads the injected SKILL.md instructions and calls bash to execute the scripts:
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "I'll validate your customer data using the data-validator skill."
+    },
+    {
+      "type": "tool_use",
+      "id": "toolu_01AAA",
+      "name": "bash",
+      "input": {
+        "command": "python /home/user/skills/data-validator/src/validate.py --input /tmp/customers.csv --schema /home/user/skills/data-validator/schemas/customer.json"
+      }
+    }
+  ],
+  "stop_reason": "tool_use"
+}
+```
+
+You execute the command on your machine, return the output, and Claude continues — generating a report, fixing data, or whatever the task requires.
+
+### Multi-Skill Loading
+
+Load multiple skills into one system prompt for complex workflows:
+
+```bash
+# Load data-validator + test-runner skills
+SYSTEM_PROMPT=$(build_system_prompt "data-validator" "test-runner")
+
+# Claude can now use both skills in one conversation
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d "$(jq -n \
+    --arg system "$SYSTEM_PROMPT" \
+    '{
+      "model": "claude-sonnet-4-5-20250514",
+      "max_tokens": 4096,
+      "system": $system,
+      "tools": [
+        {"type": "bash_20250124", "name": "bash"},
+        {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"}
+      ],
+      "messages": [
+        {
+          "role": "user",
+          "content": "Validate /tmp/customers.csv, fix any errors, then run the test suite to make sure nothing is broken."
+        }
+      ]
+    }')"
+```
+
+---
+
 ## Mixing Built-in + Custom Tools
 
 You can combine Anthropic's built-in client tools with your own custom tools in a single request. Claude uses built-in tools for general operations and your custom tools for domain-specific tasks.
@@ -740,6 +968,10 @@ Combine bash, text_editor, and custom database tool:
 7. **Log all tool executions**: Keep an audit trail of what Claude requested and what was executed.
 
 8. **Use the right tool for the job**: If you need isolated, sandboxed execution, use containers instead (see [Example 19](example-19-agent-skills.md) and [Example 22](example-22-virtual-file-system-container-sandbox.md)).
+
+9. **Keep SKILL.md instructions focused**: Tell Claude exactly when to use the skill, what scripts are available, and what arguments they accept. The more specific, the better.
+
+10. **Version local skills with git**: Track your skill directories in version control so you can share, roll back, and collaborate on skills across teams.
 
 ---
 
