@@ -75,7 +75,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [
@@ -213,7 +213,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [
@@ -254,7 +254,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [
@@ -297,7 +297,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [
@@ -361,7 +361,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   // Remote MCP tools (executed by the MCP server)
@@ -452,7 +452,7 @@ const client = new Anthropic();
 
 try {
   const message = await client.beta.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     betas: ["mcp-client-2025-11-20"],
     mcp_servers: [
@@ -554,7 +554,7 @@ async function callWithRetry(
 }
 
 const message = await callWithRetry({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["mcp-client-2025-11-20"],
   mcp_servers: [

@@ -7,7 +7,7 @@
 - **Difficulty**: Beginner
 - **Features Used**: Files API
 - **Beta**: `files-api-2025-04-14`
-- **SDK Methods**: `client.beta.files.upload()`, `client.beta.files.list()`, `client.beta.files.retrieve()`, `client.beta.files.delete()`, `client.beta.messages.create()`
+- **SDK Methods**: `client.beta.files.upload()`, `client.beta.files.list()`, `client.beta.files.retrieveMetadata()`, `client.beta.files.delete()`, `client.beta.messages.create()`
 - **Use Cases**:
   - Reusable document analysis
   - Multi-turn conversations about files
@@ -92,7 +92,7 @@ const client = new Anthropic();
 
 const message = await client.beta.messages.create(
   {
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {
@@ -101,8 +101,12 @@ const message = await client.beta.messages.create(
           {
             type: "document",
             source: {
-              type: "file",
-              file_id: file.id,
+              // Note: source type "file" with file_id is deprecated.
+              // Use "url", "base64", "content", or "text" instead.
+              // To use an uploaded file, download it first with
+              // client.beta.files.download() and pass the content directly.
+              type: "url",
+              url: "https://example.com/document.pdf",
             },
           },
           {
@@ -155,7 +159,7 @@ const client = new Anthropic();
 // Ask a different question about the same file — no re-upload needed
 const followUp = await client.beta.messages.create(
   {
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {
@@ -164,8 +168,10 @@ const followUp = await client.beta.messages.create(
           {
             type: "document",
             source: {
-              type: "file",
-              file_id: file.id,
+              // Note: source type "file" with file_id is deprecated.
+              // Valid source types: "url", "base64", "content", "text"
+              type: "url",
+              url: "https://example.com/document.pdf",
             },
           },
           {
@@ -198,7 +204,7 @@ import Anthropic from "@anthropic-ai/sdk";
 
 const client = new Anthropic();
 
-const metadata = await client.beta.files.retrieve(
+const metadata = await client.beta.files.retrieveMetadata(
   file.id,
   { betas: ["files-api-2025-04-14"] }
 );
@@ -354,7 +360,7 @@ console.log("File 2:", file2.id);
 ```typescript
 const comparison = await client.beta.messages.create(
   {
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {
@@ -362,11 +368,19 @@ const comparison = await client.beta.messages.create(
         content: [
           {
             type: "document",
-            source: { type: "file", file_id: file1.id },
+            source: {
+              // Note: source type "file" with file_id is deprecated.
+              // Valid source types: "url", "base64", "content", "text"
+              type: "url",
+              url: "https://example.com/contract_v1.pdf",
+            },
           },
           {
             type: "document",
-            source: { type: "file", file_id: file2.id },
+            source: {
+              type: "url",
+              url: "https://example.com/contract_v2.pdf",
+            },
           },
           {
             type: "text",
@@ -447,7 +461,7 @@ async function filesApiWorkflow(filePath: string) {
 
     const response = await client.beta.messages.create(
       {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 2048,
         messages: [
           {
@@ -455,7 +469,12 @@ async function filesApiWorkflow(filePath: string) {
             content: [
               {
                 type: "document",
-                source: { type: "file", file_id: file.id },
+                source: {
+                  // Note: source type "file" with file_id is deprecated.
+                  // Valid source types: "url", "base64", "content", "text"
+                  type: "url",
+                  url: `https://example.com/${filePath.split("/").pop()}`,
+                },
               },
               {
                 type: "text",

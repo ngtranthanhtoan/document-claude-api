@@ -6,7 +6,7 @@
 
 - **Difficulty**: Expert
 - **Features Used**: Agent Skills, Code Execution Tool, Files API
-- **SDK Methods**: `client.beta.messages.create()`, `client.beta.files.retrieve()`
+- **SDK Methods**: `client.beta.messages.create()`, `client.beta.files.retrieveMetadata()`, `client.beta.files.download()`
 - **Beta**: `code-execution-2025-08-25`, `skills-2025-10-02`, `files-api-2025-04-14`
 - **Use Cases**:
   - Spreadsheet creation and analysis
@@ -65,7 +65,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -136,7 +136,7 @@ Files created by skills must be downloaded via the Files API.
 ### Step 1: Get File Metadata
 
 ```typescript
-const fileMetadata = await client.beta.files.retrieve("file_01XYZ123", {
+const fileMetadata = await client.beta.files.retrieveMetadata("file_01XYZ123", {
   betas: ["files-api-2025-04-14"],
 });
 
@@ -149,7 +149,7 @@ console.log("Size:", fileMetadata.size_bytes, "bytes");
 ```typescript
 import * as fs from "fs";
 
-const response = await client.beta.files.retrieveContent("file_01XYZ123", {
+const response = await client.beta.files.download("file_01XYZ123", {
   betas: ["files-api-2025-04-14"],
 });
 
@@ -165,7 +165,7 @@ console.log("Downloaded: monthly_budget.xlsx");
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -201,7 +201,7 @@ Combine skills for complex workflows.
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -233,7 +233,7 @@ Reuse the same container across messages.
 
 ```typescript
 const turn1 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -253,7 +253,7 @@ console.log("Container ID:", containerId);
 
 ```typescript
 const turn2 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -284,7 +284,7 @@ async function createWithRetry(
 
   for (let i = 0; i < MAX_RETRIES; i++) {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
       container: {
@@ -380,7 +380,7 @@ console.log("Skill ID:", skill.id);
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -416,7 +416,7 @@ async function createAndDownload(prompt: string, skillId: string, outputPath: st
   // Step 1: Create file with skill
   console.log("Creating file...");
   const message = await client.beta.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
     container: {
@@ -453,13 +453,13 @@ async function createAndDownload(prompt: string, skillId: string, outputPath: st
   console.log("File created:", fileId);
 
   // Step 3: Get file metadata
-  const metadata = await client.beta.files.retrieve(fileId, {
+  const metadata = await client.beta.files.retrieveMetadata(fileId, {
     betas: ["files-api-2025-04-14"],
   });
   console.log("Filename:", metadata.filename);
 
   // Step 4: Download the file
-  const fileResponse = await client.beta.files.retrieveContent(fileId, {
+  const fileResponse = await client.beta.files.download(fileId, {
     betas: ["files-api-2025-04-14"],
   });
   const buffer = Buffer.from(await fileResponse.arrayBuffer());

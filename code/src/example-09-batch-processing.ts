@@ -36,7 +36,7 @@ async function main() {
     products.map((task) => ({
       custom_id: task.id,
       params: {
-        model: "claude-haiku-4-5-20250514" as const,
+        model: "claude-haiku-4-5-20251001" as const,
         max_tokens: 500,
         messages: [
           {

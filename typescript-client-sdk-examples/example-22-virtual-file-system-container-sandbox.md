@@ -6,7 +6,7 @@
 
 - **Difficulty**: Expert
 - **Features Used**: Code Execution Tool, Files API, Container Management, Agent Skills
-- **SDK Methods**: `client.beta.messages.create()`, `client.beta.files.upload()`, `client.beta.files.retrieve()`, `client.beta.files.retrieveContent()`
+- **SDK Methods**: `client.beta.messages.create()`, `client.beta.files.upload()`, `client.beta.files.retrieveMetadata()`, `client.beta.files.download()`
 - **Beta**: `code-execution-2025-08-25`, `files-api-2025-04-14`, `skills-2025-10-02`
 - **Use Cases**:
   - Stateful multi-turn file processing workflows
@@ -61,7 +61,7 @@ When Claude executes code, three layers work together:
 ┌──────────────────────────────────────────────────────────────────┐
 │  FILES API  (bridge between your system and the container)       │
 │  client.beta.files.upload()          ← upload files             │
-│  client.beta.files.retrieveContent() ← download files           │
+│  client.beta.files.download()          ← download files           │
 │  client.beta.files.delete()          ← cleanup                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
@@ -161,7 +161,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [
@@ -230,7 +230,7 @@ The sandbox is the security boundary inside the container, providing filesystem 
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -417,7 +417,7 @@ const client = new Anthropic();
 
 // ── Turn 1: Create files in the container ──
 const turn1 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -435,7 +435,7 @@ console.log("Container ID:", containerId);
 
 // ── Turn 2: Run the script (files persist!) ──
 const turn2 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   container: containerId, // <-- reuse container
@@ -452,7 +452,7 @@ console.log("Same container:", turn2.container?.id === containerId); // true
 
 // ── Turn 3: Build on previous results ──
 const turn3 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   container: containerId, // <-- same container, files still there
@@ -513,7 +513,7 @@ const configFile = await client.beta.files.upload({
 
 // Load into container and use it
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "files-api-2025-04-14"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -538,7 +538,7 @@ Pass key-value pairs directly in the prompt:
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -565,7 +565,7 @@ Use a first turn to configure the environment, then reuse the container:
 ```typescript
 // Turn 1: Set up environment
 const setup = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -582,7 +582,7 @@ const containerId = setup.container?.id;
 
 // Turn 2: Use the pre-configured container
 const result = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   container: containerId,
@@ -624,7 +624,7 @@ console.log("Uploaded:", file.id);
 
 // Step 2: Load into container with container_upload
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "files-api-2025-04-14"],
   tools: [{ type: "code_execution_20250825", name: "code_execution" }],
@@ -667,13 +667,13 @@ const files = extractFileIds(message); // Helper from Section 3
 // Step 2: Download each file
 for (const fileRef of files) {
   // Get metadata
-  const metadata = await client.beta.files.retrieve(fileRef.file_id, {
+  const metadata = await client.beta.files.retrieveMetadata(fileRef.file_id, {
     betas: ["files-api-2025-04-14"],
   });
   console.log(`File: ${metadata.filename} (${metadata.size_bytes} bytes)`);
 
   // Download content
-  const content = await client.beta.files.retrieveContent(fileRef.file_id, {
+  const content = await client.beta.files.download(fileRef.file_id, {
     betas: ["files-api-2025-04-14"],
   });
   const buffer = Buffer.from(await content.arrayBuffer());
@@ -690,7 +690,7 @@ for (const fileRef of files) {
 │ System  │                  │ file_xxx │                    │ VFS       │
 └─────────┘                  └──────────┘                    └───────────┘
      ▲                            ▲                               │
-     │  retrieveContent()         │   file_id in response         │
+     │  download()                │   file_id in response         │
      │                            │                               │
      └────────────────────────────┴──────────────── Code creates files
 ```
@@ -705,7 +705,7 @@ When you configure skills, their files are loaded into `/skills/{directory}/` on
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -737,7 +737,7 @@ const message = await client.beta.messages.create({
 ```typescript
 // Turn 1: Use xlsx skill
 const turn1 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -757,7 +757,7 @@ const containerId = turn1.container?.id;
 
 // Turn 2: Different skill, same container — /tmp/sales.csv still exists
 const turn2 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -802,7 +802,7 @@ async function runWithPauseTurn(
 
   for (let i = 0; i < MAX_RETRIES; i++) {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 8192,
       betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
       container: skills
@@ -839,7 +839,7 @@ async function runWithPauseTurn(
 async function isContainerAlive(containerId: string): Promise<boolean> {
   try {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 1024,
       betas: ["code-execution-2025-08-25"],
       container: containerId,
@@ -892,11 +892,11 @@ async function downloadFiles(message: any): Promise<string[]> {
   const downloaded: string[] = [];
 
   for (const f of files) {
-    const metadata = await client.beta.files.retrieve(f.file_id, {
+    const metadata = await client.beta.files.retrieveMetadata(f.file_id, {
       betas: ["files-api-2025-04-14"],
     });
 
-    const content = await client.beta.files.retrieveContent(f.file_id, {
+    const content = await client.beta.files.download(f.file_id, {
       betas: ["files-api-2025-04-14"],
     });
     const buffer = Buffer.from(await content.arrayBuffer());
@@ -921,7 +921,7 @@ async function sendWithRetry(
 
   for (let i = 0; i < maxRetries; i++) {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 8192,
       betas: skills
         ? ["code-execution-2025-08-25", "skills-2025-10-02"]
@@ -1022,7 +1022,7 @@ async function main() {
   // ── Step 5: Verify file persistence ──
   console.log("\n=== Step 5: Verifying file persistence ===");
   const verifyResponse = await client.beta.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     betas: ["code-execution-2025-08-25"],
     container: containerId,

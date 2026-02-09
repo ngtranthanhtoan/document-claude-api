@@ -69,7 +69,7 @@ Architecture:
         max_tokens: 1024,
         tools: [
           {
-            type: "computer_20241022",
+            type: "computer_20250124",
             name: "computer",
             display_width_px: 1024,
             display_height_px: 768,
@@ -143,7 +143,7 @@ async function computerUseLoop(task: string) {
       // IMPORTANT: disable parallel tool use for sequential actions
       disable_parallel_tool_use: true,
       tools: [{
-        type: "computer_20241022",
+        type: "computer_20250124",
         name: "computer",
         display_width_px: 1920,
         display_height_px: 1080

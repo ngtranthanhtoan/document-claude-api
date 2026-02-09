@@ -80,7 +80,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: computer-use-2025-01-24" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -309,7 +309,7 @@ for i in $(seq 1 $MAX_ITERATIONS); do
     -H "anthropic-beta: computer-use-2025-01-24" \
     -H "content-type: application/json" \
     -d "$(jq -n --argjson msgs "$MESSAGES" '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       tools: [{
         type: "computer_20241022",
@@ -395,7 +395,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: computer-use-2025-01-24" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{
       "type": "computer_20241022",

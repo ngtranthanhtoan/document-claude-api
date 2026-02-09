@@ -26,10 +26,10 @@
 
 ## How Citations Work
 
-1. Enable citations with `citations: { enabled: true }` in the request
+1. Enable citations with `citations: { enabled: true }` on each document block
 2. Provide documents in the message content
 3. Claude responds with inline citations pointing to source text
-4. Response includes `citation` blocks with exact quotes and locations
+4. Response text blocks include a `citations` array with exact quotes and locations
 
 ---
 
@@ -43,9 +43,8 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -58,6 +57,7 @@ const message = await client.messages.create({
             data: "Company Policy Document\n\nSection 1: Remote Work Policy\nEmployees may work remotely up to 3 days per week with manager approval. All remote work must be logged in the HR system by end of day Monday.\n\nSection 2: Equipment\nThe company provides a laptop and monitor for home office use. Employees are responsible for maintaining a suitable work environment.\n\nSection 3: Communication\nRemote employees must be available on Slack during core hours (10am-3pm local time). Video should be enabled for all team meetings.",
           },
           title: "Employee Handbook 2024",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -81,19 +81,17 @@ console.log(JSON.stringify(message.content, null, 2));
   "content": [
     {
       "type": "text",
-      "text": "According to the company policy, "
-    },
-    {
-      "type": "citation",
-      "cited_text": "Employees may work remotely up to 3 days per week with manager approval.",
-      "document_index": 0,
-      "document_title": "Employee Handbook 2024",
-      "start_char": 45,
-      "end_char": 116
-    },
-    {
-      "type": "text",
-      "text": " So you can work from home up to 3 days per week, but you need to get approval from your manager first."
+      "text": "According to the company policy, employees may work remotely up to 3 days per week with manager approval. So you can work from home up to 3 days per week, but you need to get approval from your manager first.",
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Employees may work remotely up to 3 days per week with manager approval.",
+          "document_index": 0,
+          "document_title": "Employee Handbook 2024",
+          "start_char_index": 45,
+          "end_char_index": 116
+        }
+      ]
     }
   ],
   "stop_reason": "end_turn"
@@ -114,9 +112,8 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -129,6 +126,7 @@ const message = await client.messages.create({
             data: "Q3 2024 Financial Report\n\nRevenue: $45.2M (up 12% YoY)\nNet Income: $8.1M (up 18% YoY)\nOperating Margin: 22%\nCustomer Count: 15,000 (up 25% YoY)",
           },
           title: "Q3 Financial Report",
+          citations: { enabled: true },
         },
         {
           type: "document",
@@ -138,6 +136,7 @@ const message = await client.messages.create({
             data: "Q2 2024 Financial Report\n\nRevenue: $42.1M (up 10% YoY)\nNet Income: $7.2M (up 15% YoY)\nOperating Margin: 20%\nCustomer Count: 13,500 (up 22% YoY)",
           },
           title: "Q2 Financial Report",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -158,31 +157,25 @@ console.log(JSON.stringify(message.content, null, 2));
   "content": [
     {
       "type": "text",
-      "text": "The company's revenue increased from Q2 to Q3. In Q2, "
-    },
-    {
-      "type": "citation",
-      "cited_text": "Revenue: $42.1M (up 10% YoY)",
-      "document_index": 1,
-      "document_title": "Q2 Financial Report",
-      "start_char": 28,
-      "end_char": 56
-    },
-    {
-      "type": "text",
-      "text": " while in Q3, "
-    },
-    {
-      "type": "citation",
-      "cited_text": "Revenue: $45.2M (up 12% YoY)",
-      "document_index": 0,
-      "document_title": "Q3 Financial Report",
-      "start_char": 28,
-      "end_char": 56
-    },
-    {
-      "type": "text",
-      "text": " This represents a quarter-over-quarter increase of $3.1M or approximately 7.4%."
+      "text": "The company's revenue increased from Q2 to Q3. In Q2, revenue was $42.1M (up 10% YoY), while in Q3, revenue grew to $45.2M (up 12% YoY). This represents a quarter-over-quarter increase of $3.1M or approximately 7.4%.",
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Revenue: $42.1M (up 10% YoY)",
+          "document_index": 1,
+          "document_title": "Q2 Financial Report",
+          "start_char_index": 28,
+          "end_char_index": 56
+        },
+        {
+          "type": "char_location",
+          "cited_text": "Revenue: $45.2M (up 12% YoY)",
+          "document_index": 0,
+          "document_title": "Q3 Financial Report",
+          "start_char_index": 28,
+          "end_char_index": 56
+        }
+      ]
     }
   ]
 }
@@ -207,9 +200,8 @@ const pdfBuffer = fs.readFileSync("research-paper.pdf");
 const pdfBase64 = pdfBuffer.toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -222,6 +214,7 @@ const message = await client.messages.create({
             data: pdfBase64,
           },
           title: "Research Paper",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -236,8 +229,13 @@ const message = await client.messages.create({
 for (const block of message.content) {
   if (block.type === "text") {
     process.stdout.write(block.text);
-  } else if (block.type === "citation") {
-    process.stdout.write(`[${block.document_title}: "${block.cited_text}"]`);
+    if (block.citations && block.citations.length > 0) {
+      for (const cite of block.citations) {
+        process.stdout.write(
+          `\n  [${cite.document_title}: "${cite.cited_text}"]`
+        );
+      }
+    }
   }
 }
 console.log();
@@ -259,7 +257,6 @@ const client = new Anthropic();
 const message = await client.messages.create({
   model: "claude-opus-4-5-20251101",
   max_tokens: 8000,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -272,6 +269,7 @@ const message = await client.messages.create({
             data: "SERVICE AGREEMENT\n\nArticle 5: Termination\n5.1 Either party may terminate this Agreement with 30 days written notice.\n5.2 Immediate termination is permitted upon material breach that remains uncured for 15 days after written notice.\n5.3 Upon termination, all confidential information must be returned within 10 business days.\n\nArticle 6: Liability\n6.1 Neither party shall be liable for indirect, incidental, or consequential damages.\n6.2 Total liability under this Agreement shall not exceed the fees paid in the 12 months preceding the claim.\n6.3 The limitations in this section shall not apply to breaches of confidentiality obligations.",
           },
           title: "Service Agreement v2.1",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -286,10 +284,13 @@ const message = await client.messages.create({
 for (const block of message.content) {
   if (block.type === "text") {
     process.stdout.write(block.text);
-  } else if (block.type === "citation") {
-    process.stdout.write(
-      `\n  >> [Cited from "${block.document_title}"]: "${block.cited_text}"\n`
-    );
+    if (block.citations && block.citations.length > 0) {
+      for (const cite of block.citations) {
+        process.stdout.write(
+          `\n  >> [Cited from "${cite.document_title}"]: "${cite.cited_text}"\n`
+        );
+      }
+    }
   }
 }
 console.log();
@@ -307,24 +308,32 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 function extractCitations(message: Anthropic.Message) {
-  return message.content
-    .filter((block) => block.type === "citation")
-    .map((block) => {
-      if (block.type === "citation") {
-        return {
-          quote: block.cited_text,
-          source: block.document_title,
-          position: { start: block.start_char, end: block.end_char },
-        };
+  const citations: Array<{
+    quote: string;
+    source: string;
+    position: { start: number; end: number };
+  }> = [];
+  for (const block of message.content) {
+    if (block.type === "text" && block.citations) {
+      for (const cite of block.citations) {
+        citations.push({
+          quote: cite.cited_text,
+          source: cite.document_title,
+          position: {
+            start: cite.start_char_index,
+            end: cite.end_char_index,
+          },
+        });
       }
-    });
+    }
+  }
+  return citations;
 }
 
 // Example usage
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -337,6 +346,7 @@ const message = await client.messages.create({
             data: "SERVICE AGREEMENT\n\nArticle 5: Termination\n5.1 Either party may terminate this Agreement with 30 days written notice.\n5.2 Immediate termination is permitted upon material breach that remains uncured for 15 days after written notice.\n5.3 Upon termination, all confidential information must be returned within 10 business days.",
           },
           title: "Service Agreement v2.1",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -382,9 +392,8 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
-  citations: { enabled: true },
   tools: [
     {
       name: "extract_claims",
@@ -424,6 +433,7 @@ const message = await client.messages.create({
             data: "Study Results: The treatment group showed a 45% improvement in symptoms compared to placebo (p<0.01). Side effects were mild and occurred in only 5% of participants.",
           },
           title: "Clinical Trial Results",
+          citations: { enabled: true },
         },
         {
           type: "text",
@@ -434,12 +444,17 @@ const message = await client.messages.create({
   ],
 });
 
-// Handle both citation blocks and tool use blocks
+// Handle text blocks with citations and tool use blocks
 for (const block of message.content) {
   if (block.type === "text") {
     console.log("Text:", block.text);
-  } else if (block.type === "citation") {
-    console.log(`Citation: "${block.cited_text}" [${block.document_title}]`);
+    if (block.citations && block.citations.length > 0) {
+      for (const cite of block.citations) {
+        console.log(
+          `Citation: "${cite.cited_text}" [${cite.document_title}]`
+        );
+      }
+    }
   } else if (block.type === "tool_use") {
     console.log("Extracted claims:", JSON.stringify(block.input, null, 2));
   }
@@ -448,26 +463,36 @@ for (const block of message.content) {
 
 ---
 
-## Citation Block Structure
+## Citation Structure
+
+Citations appear in the `citations` array on each `TextBlock`, not as separate content blocks.
 
 ```typescript
+// TextBlock with citations
 {
-  type: "citation",
-  cited_text: "The exact quoted text from the source",
-  document_index: 0,
-  document_title: "Document Name",
-  start_char: 100,
-  end_char: 150
+  type: "text",
+  text: "The response text with cited information...",
+  citations: [
+    {
+      type: "char_location",
+      cited_text: "The exact quoted text from the source",
+      document_index: 0,
+      document_title: "Document Name",
+      start_char_index: 100,
+      end_char_index: 150,
+    }
+  ]
 }
 ```
 
 | Field | Description |
 |-------|-------------|
+| `type` | Citation type (e.g., `"char_location"` for text documents) |
 | `cited_text` | The exact text being quoted |
 | `document_index` | Index of source document (0-based) |
 | `document_title` | Title of the source document |
-| `start_char` | Character position where quote starts |
-| `end_char` | Character position where quote ends |
+| `start_char_index` | Character position where quote starts |
+| `end_char_index` | Character position where quote ends |
 
 ---
 

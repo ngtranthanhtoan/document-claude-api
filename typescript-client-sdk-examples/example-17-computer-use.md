@@ -117,7 +117,7 @@ const client = new Anthropic();
 const screenshot = fs.readFileSync("screenshot.png").toString("base64");
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["computer-use-2025-01-24"],
   tools: [
@@ -373,7 +373,7 @@ async function computerUseLoop(task: string): Promise<void> {
     console.log(`--- Iteration ${i + 1} ---`);
 
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       betas: ["computer-use-2025-01-24"],
       tools,

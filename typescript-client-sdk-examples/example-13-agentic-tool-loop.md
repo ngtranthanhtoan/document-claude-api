@@ -76,7 +76,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const response = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   system:
     "You are a research assistant. Use the available tools to gather information and complete tasks. Continue using tools until you have enough information to provide a complete answer.",
@@ -207,7 +207,7 @@ const messages: Anthropic.MessageParam[] = [
 ];
 
 const response2 = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     /* same tools */
@@ -365,7 +365,7 @@ for (let i = 0; i < MAX_ITERATIONS; i++) {
   console.log(`\n=== Iteration ${i + 1} ===`);
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     system:
       "You are a helpful research assistant. Use tools to gather information. Continue until you have a complete answer.",
@@ -484,7 +484,7 @@ const articleTool = zodTool({
 
 // The toolRunner handles the entire agentic loop automatically
 const runner = client.beta.messages.toolRunner({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [cryptoTool, newsTool, articleTool],
   messages: [

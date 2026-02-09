@@ -6,7 +6,7 @@
 
 - **Difficulty**: Expert
 - **Features Used**: Bash Tool, Text Editor Tool, Web Search, Web Fetch, Tool Search, Code Execution, Agent Skills, Computer Use, Programmatic Tool Calling, Fine-Grained Tool Streaming
-- **SDK Methods**: `client.beta.messages.create()`, `client.messages.stream()`, `client.beta.files.retrieve()`
+- **SDK Methods**: `client.beta.messages.create()`, `client.messages.stream()`, `client.beta.files.retrieveMetadata()`, `client.beta.files.download()`
 - **Beta**: `code-execution-2025-08-25`, `skills-2025-10-02`, `web-fetch-2025-09-10`, `advanced-tool-use-2025-11-20`, `computer-use-2025-01-24`
 - **Use Cases**:
   - Competitive intelligence report generation
@@ -144,7 +144,7 @@ Search the web for information, then fetch full articles for deep analysis.
 const client = new Anthropic();
 
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["web-fetch-2025-09-10"],
   tool_choice: { type: "tool", name: "web_search" },
@@ -267,7 +267,7 @@ Use bash to set up a workspace, then code execution for analysis.
 
 ```typescript
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25"],
   tools: [
@@ -335,7 +335,7 @@ Create and iteratively refine a report document.
 
 ```typescript
 const response = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     { type: "text_editor_20250728", name: "text_editor" },
@@ -391,7 +391,7 @@ When the agent encounters a subtask requiring specialized tools, it can search a
 
 ```typescript
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["advanced-tool-use-2025-11-20"],
   tools: [
@@ -481,7 +481,7 @@ Generate polished Excel and PowerPoint files using container skills.
 
 ```typescript
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 8192,
   betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
   container: {
@@ -517,7 +517,7 @@ async function runWithPauseTurn(
 
   for (let i = 0; i < MAX_RETRIES; i++) {
     const response = await client.beta.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 8192,
       betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
       container: {
@@ -571,7 +571,7 @@ function extractFileIds(content: Anthropic.Messages.ContentBlock[]): string[] {
 
 // Download a generated file
 async function downloadFile(fileId: string, outputPath: string) {
-  const fileResponse = await client.beta.files.retrieveContent(fileId, {
+  const fileResponse = await client.beta.files.download(fileId, {
     betas: ["files-api-2025-04-14"],
   });
   const buffer = Buffer.from(await fileResponse.arrayBuffer());
@@ -600,7 +600,7 @@ function takeScreenshot(): string {
 const screenshot = takeScreenshot();
 
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["computer-use-2025-01-24"],
   tools: [
@@ -679,7 +679,7 @@ Force the agent to start with web search before doing anything else:
 
 ```typescript
 const response = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tool_choice: { type: "tool", name: "web_search" },
   tools: [
@@ -705,7 +705,7 @@ Prevent Claude from calling multiple tools simultaneously. Critical for computer
 
 ```typescript
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["computer-use-2025-01-24"],
   disable_parallel_tool_use: true,
@@ -727,7 +727,7 @@ Control which tools can be invoked programmatically by code execution vs. direct
 
 ```typescript
 const response = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["code-execution-2025-08-25", "advanced-tool-use-2025-11-20"],
   tools: [
@@ -789,7 +789,7 @@ Enable real-time streaming of tool inputs as they are generated, before the comp
 
 ```typescript
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     {
@@ -850,7 +850,7 @@ async function streamWithTools(
 ): Promise<Anthropic.Messages.Message> {
   while (true) {
     const stream = client.messages.stream({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       tools: [
         {
@@ -911,7 +911,7 @@ import { execSync } from "child_process";
 const client = new Anthropic();
 
 // Configuration
-const MODEL = "claude-sonnet-4-5-20250514";
+const MODEL = "claude-sonnet-4-5-20250929";
 const WORKSPACE = "/tmp/fullstack_agent_workspace";
 const MAX_ITERATIONS = 10;
 
@@ -1345,10 +1345,10 @@ async function main() {
   console.log("\n=== Downloading Files ===");
   for (const fileId of allFileIds) {
     try {
-      const metadata = await client.beta.files.retrieve(fileId, {
+      const metadata = await client.beta.files.retrieveMetadata(fileId, {
         betas: ["files-api-2025-04-14"],
       });
-      const fileResponse = await client.beta.files.retrieveContent(
+      const fileResponse = await client.beta.files.download(
         fileId,
         { betas: ["files-api-2025-04-14"] }
       );

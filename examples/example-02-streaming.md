@@ -33,7 +33,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "stream": true,
     "messages": [
@@ -49,7 +49,7 @@ curl https://api.anthropic.com/v1/messages \
 
 ```
 event: message_start
-data: {"type":"message_start","message":{"id":"msg_01ABC","type":"message","role":"assistant","content":[],"model":"claude-sonnet-4-5-20250514","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":1}}}
+data: {"type":"message_start","message":{"id":"msg_01ABC","type":"message","role":"assistant","content":[],"model":"claude-sonnet-4-5-20250929","stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":12,"output_tokens":1}}}
 
 event: content_block_start
 data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
@@ -144,7 +144,7 @@ curl -sN https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "stream": true,
     "messages": [{"role": "user", "content": "Write a short poem about the moon."}]
@@ -179,7 +179,7 @@ curl -sN https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "stream": true,
     "tools": [{
@@ -199,7 +199,7 @@ curl -sN https://api.anthropic.com/v1/messages \
 
 ```
 event: message_start
-data: {"type":"message_start","message":{"id":"msg_01ABC","type":"message","role":"assistant","content":[],"model":"claude-sonnet-4-5-20250514","stop_reason":null}}
+data: {"type":"message_start","message":{"id":"msg_01ABC","type":"message","role":"assistant","content":[],"model":"claude-sonnet-4-5-20250929","stop_reason":null}}
 
 event: content_block_start
 data: {"type":"content_block_start","index":0,"content_block":{"type":"tool_use","id":"toolu_01ABC","name":"get_weather","input":{}}}
@@ -230,13 +230,13 @@ A complete bash script that handles streaming and builds the full response.
 #!/bin/bash
 
 # Configuration
-MODEL="claude-sonnet-4-5-20250514"
+MODEL="claude-sonnet-4-5-20250929"
 MAX_TOKENS=2048
 
 # Build request
 REQUEST=$(cat << 'EOF'
 {
-  "model": "claude-sonnet-4-5-20250514",
+  "model": "claude-sonnet-4-5-20250929",
   "max_tokens": 2048,
   "stream": true,
   "messages": [
@@ -341,7 +341,7 @@ curl -sN https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 8000,
     "stream": true,
     "thinking": {"type": "enabled", "budget_tokens": 5000},

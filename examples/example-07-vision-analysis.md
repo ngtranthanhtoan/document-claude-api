@@ -49,7 +49,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "messages": [
       {
@@ -104,7 +104,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "messages": [
       {
@@ -141,7 +141,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -179,7 +179,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -217,7 +217,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -255,7 +255,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -301,7 +301,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -339,7 +339,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [
       {
@@ -377,7 +377,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 500,
     "messages": [
       {
@@ -441,7 +441,7 @@ REQUEST=$(jq -n \
   --arg media "$MEDIA_TYPE" \
   --arg q "$QUESTION" \
   '{
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     messages: [{
       role: "user",

@@ -32,7 +32,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": "You are a data extraction assistant. Always respond with valid JSON matching the requested schema. Never include markdown formatting, explanations, or any text outside the JSON object.",
     "messages": [
@@ -75,7 +75,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": "You are a sentiment analysis system. Analyze the provided text and use the record_sentiment tool to output your analysis.",
     "tools": [
@@ -178,7 +178,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tool_choice": {"type": "tool", "name": "extract_entities"},
     "tools": [
@@ -264,7 +264,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-haiku-4-5-20250514",
+    "model": "claude-haiku-4-5-20251001",
     "max_tokens": 500,
     "tool_choice": {"type": "tool", "name": "classify_ticket"},
     "tools": [

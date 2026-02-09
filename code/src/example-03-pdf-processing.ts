@@ -10,34 +10,43 @@ async function main() {
   // ─── Method 1: PDF from URL ───
   printHeader("Method 1: PDF from URL");
 
-  const msg1 = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
-    max_tokens: 4096,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "document",
-            source: {
-              type: "url",
-              url: "https://www.w3.org/WAI/WCAG21/Techniques/pdf/img/table-word.jpg",
+  try {
+    const msg1 = await client.messages.create({
+      model: "claude-sonnet-4-5-20250929",
+      max_tokens: 4096,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "document",
+              source: {
+                type: "url",
+                url: "https://arxiv.org/pdf/2310.06825",
+              },
             },
-          },
-          {
-            type: "text",
-            text: "Describe what you see in this document/image.",
-          },
-        ],
-      },
-    ],
-  });
+            {
+              type: "text",
+              text: "Summarize this document in 3-5 bullet points.",
+            },
+          ],
+        },
+      ],
+    });
 
-  const textBlock1 = msg1.content.find((block) => block.type === "text");
-  if (textBlock1 && textBlock1.type === "text") {
-    console.log(textBlock1.text);
+    const textBlock1 = msg1.content.find((block) => block.type === "text");
+    if (textBlock1 && textBlock1.type === "text") {
+      console.log(textBlock1.text);
+    }
+    console.log("\nTokens — input:", msg1.usage.input_tokens, "output:", msg1.usage.output_tokens);
+  } catch (error) {
+    if (error instanceof Anthropic.APIError) {
+      console.log(`API Error: ${error.status} - ${error.message}`);
+      console.log("(URL-based PDF loading may not be available for all URLs)");
+    } else {
+      throw error;
+    }
   }
-  console.log("\nTokens — input:", msg1.usage.input_tokens, "output:", msg1.usage.output_tokens);
 
   // ─── Method 2: Base64 PDF (inline generated) ───
   printHeader("Method 2: Inline Text as Document");
@@ -147,7 +156,9 @@ Governing Law: State of Delaware`,
 
   const textBlock3 = msg3.content.find((block) => block.type === "text");
   if (textBlock3 && textBlock3.type === "text") {
-    const contractData = JSON.parse(textBlock3.text);
+    // Strip markdown code fences if present
+    const jsonStr = textBlock3.text.replace(/^```(?:json)?\n?/gm, "").replace(/```$/gm, "").trim();
+    const contractData = JSON.parse(jsonStr);
     console.log("Parties:", contractData.parties);
     console.log("Effective Date:", contractData.effective_date);
     console.log("Payment Terms:", contractData.payment_terms);

@@ -59,7 +59,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: [
     {
@@ -124,7 +124,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: [
     {
@@ -183,7 +183,7 @@ For high-traffic systems, use 1-hour TTL.
 
 ```typescript
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: [
     {
@@ -219,7 +219,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: [
     {
@@ -256,9 +256,8 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
-  citations: { enabled: true },
   messages: [
     {
       role: "user",
@@ -271,6 +270,7 @@ const message = await client.messages.create({
             data: "[Documentation content here...]",
           },
           title: "Product Documentation v2.0",
+          citations: { enabled: true },
           cache_control: { type: "ephemeral" },
         },
         {
@@ -282,12 +282,15 @@ const message = await client.messages.create({
   ],
 });
 
-// Extract text and citation blocks from the response
+// Extract text and citations from the response
 for (const block of message.content) {
   if (block.type === "text") {
     console.log("Answer:", block.text);
-  } else if (block.type === "cite") {
-    console.log("Citation:", block);
+    if (block.citations && block.citations.length > 0) {
+      for (const cite of block.citations) {
+        console.log(`Cited: "${cite.cited_text}" from ${cite.document_title}`);
+      }
+    }
   }
 }
 ```
@@ -319,7 +322,7 @@ const messages: Anthropic.MessageParam[] = [
 ];
 
 const response1 = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   messages,
@@ -343,7 +346,7 @@ messages.push({
 });
 
 const response2 = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   messages,
@@ -388,7 +391,7 @@ async function askQuestion(question: string): Promise<void> {
   console.log(`Q: ${question}`);
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     system: [
       {

@@ -35,7 +35,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   messages: [
     {
@@ -92,7 +92,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const stream = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   stream: true,
   messages: [
@@ -155,7 +155,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   tools: [
     {
@@ -228,7 +228,7 @@ async function streamResponse(userMessage: string) {
 
   const stream = client.messages
     .stream({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       messages: [{ role: "user", content: userMessage }],
     })
@@ -269,7 +269,7 @@ const client = new Anthropic();
 
 try {
   const stream = client.messages.stream({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello" }],
   });
@@ -308,7 +308,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const stream = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 8000,
   stream: true,
   thinking: { type: "enabled", budget_tokens: 5000 },
@@ -357,7 +357,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   messages: [{ role: "user", content: "Say hello!" }],
 });

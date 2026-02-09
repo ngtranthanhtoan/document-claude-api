@@ -62,7 +62,7 @@ curl -N https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$SYSTEM_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       stream: true,
       system: $system,
@@ -209,7 +209,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [...],
     "messages": [
@@ -256,7 +256,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$REVIEW_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system: $system,
       messages: [
@@ -280,7 +280,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -373,7 +373,7 @@ chat() {
       -H "anthropic-version: 2023-06-01" \
       -H "content-type: application/json" \
       -d "$(jq -n --argjson msgs "$MESSAGES" '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         system: "You are a coding assistant. Write clean code, test it, and explain your approach.",
         tools: [

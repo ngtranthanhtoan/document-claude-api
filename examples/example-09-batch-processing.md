@@ -59,7 +59,7 @@ curl https://api.anthropic.com/v1/messages/batches \
       {
         "custom_id": "product-001",
         "params": {
-          "model": "claude-haiku-4-5-20250514",
+          "model": "claude-haiku-4-5-20251001",
           "max_tokens": 500,
           "messages": [
             {
@@ -72,7 +72,7 @@ curl https://api.anthropic.com/v1/messages/batches \
       {
         "custom_id": "product-002",
         "params": {
-          "model": "claude-haiku-4-5-20250514",
+          "model": "claude-haiku-4-5-20251001",
           "max_tokens": 500,
           "messages": [
             {
@@ -85,7 +85,7 @@ curl https://api.anthropic.com/v1/messages/batches \
       {
         "custom_id": "product-003",
         "params": {
-          "model": "claude-haiku-4-5-20250514",
+          "model": "claude-haiku-4-5-20251001",
           "max_tokens": 500,
           "messages": [
             {
@@ -283,9 +283,9 @@ CREATE_RESPONSE=$(curl -s https://api.anthropic.com/v1/messages/batches \
   -H "content-type: application/json" \
   -d '{
     "requests": [
-      {"custom_id": "task-1", "params": {"model": "claude-haiku-4-5-20250514", "max_tokens": 100, "messages": [{"role": "user", "content": "Hello, world!"}]}},
-      {"custom_id": "task-2", "params": {"model": "claude-haiku-4-5-20250514", "max_tokens": 100, "messages": [{"role": "user", "content": "What is 2+2?"}]}},
-      {"custom_id": "task-3", "params": {"model": "claude-haiku-4-5-20250514", "max_tokens": 100, "messages": [{"role": "user", "content": "Name a color."}]}}
+      {"custom_id": "task-1", "params": {"model": "claude-haiku-4-5-20251001", "max_tokens": 100, "messages": [{"role": "user", "content": "Hello, world!"}]}},
+      {"custom_id": "task-2", "params": {"model": "claude-haiku-4-5-20251001", "max_tokens": 100, "messages": [{"role": "user", "content": "What is 2+2?"}]}},
+      {"custom_id": "task-3", "params": {"model": "claude-haiku-4-5-20251001", "max_tokens": 100, "messages": [{"role": "user", "content": "Name a color."}]}}
     ]
   }')
 

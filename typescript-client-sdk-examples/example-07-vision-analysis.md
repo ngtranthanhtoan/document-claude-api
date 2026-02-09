@@ -47,7 +47,7 @@ const client = new Anthropic();
 const imageBase64 = fs.readFileSync("photo.jpg").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   messages: [
     {
@@ -107,7 +107,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   messages: [
     {
@@ -152,7 +152,7 @@ const client = new Anthropic();
 const documentImage = fs.readFileSync("document.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -207,7 +207,7 @@ const client = new Anthropic();
 const invoiceImage = fs.readFileSync("invoice.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -288,7 +288,7 @@ const client = new Anthropic();
 const chartImage = fs.readFileSync("quarterly-chart.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -349,7 +349,7 @@ const image1Base64 = fs.readFileSync("product-v1.png").toString("base64");
 const image2Base64 = fs.readFileSync("product-v2.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -412,7 +412,7 @@ const client = new Anthropic();
 const uiScreenshot = fs.readFileSync("app-screenshot.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -472,7 +472,7 @@ const client = new Anthropic();
 const errorScreenshot = fs.readFileSync("error-screenshot.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -527,7 +527,7 @@ const client = new Anthropic();
 const imageBase64 = fs.readFileSync("hero-image.jpg").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 500,
   messages: [
     {
@@ -622,7 +622,7 @@ async function analyzeImage(
   console.log("");
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 2048,
     messages: [
       {

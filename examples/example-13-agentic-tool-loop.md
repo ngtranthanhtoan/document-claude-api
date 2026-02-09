@@ -72,7 +72,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "system": "You are a research assistant. Use the available tools to gather information and complete tasks. Continue using tools until you have enough information to provide a complete answer.",
     "tools": [
@@ -149,7 +149,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [...],
     "messages": [
@@ -221,7 +221,7 @@ The loop continues with Claude:
 # Runs Claude autonomously until task completion
 
 ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
-MODEL="claude-sonnet-4-5-20250514"
+MODEL="claude-sonnet-4-5-20250929"
 MAX_ITERATIONS=10
 
 # Initialize messages

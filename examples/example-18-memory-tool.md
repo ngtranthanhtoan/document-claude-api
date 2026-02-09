@@ -59,7 +59,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: context-management-2025-06-27" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "system": "You are a personal assistant with persistent memory. Use the memory tools to remember important information about the user across conversations. Store preferences, facts, and context that will be useful in future sessions.",
     "tools": [
@@ -176,7 +176,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: context-management-2025-06-27" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "memory_20250627", "name": "memory"}],
     "messages": [
@@ -204,7 +204,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: context-management-2025-06-27" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "memory_20250627", "name": "memory"}],
     "messages": [
@@ -233,7 +233,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: context-management-2025-06-27" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {"type": "memory_20250627", "name": "memory"},
@@ -313,7 +313,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "system": "You are an assistant with persistent memory. At the start of each conversation, read /data/memory.json to recall previous information. Update the file when you learn important new facts.",
     "tools": [
@@ -403,7 +403,7 @@ chat() {
       -H "anthropic-version: 2023-06-01" \
       -H "content-type: application/json" \
       -d "$(jq -n --argjson msgs "$MESSAGES" '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         system: "You are an assistant with persistent memory. Use the memory tool to store and retrieve important information across conversations. Store user preferences, facts, and context.",
         tools: [{

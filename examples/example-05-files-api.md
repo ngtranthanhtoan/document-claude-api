@@ -72,7 +72,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "messages": [
       {
@@ -81,8 +81,8 @@ curl https://api.anthropic.com/v1/messages \
           {
             "type": "document",
             "source": {
-              "type": "file",
-              "file_id": "file_01ABC123DEF456"
+              "type": "url",
+              "url": "https://example.com/document.pdf"
             }
           },
           {
@@ -127,7 +127,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "messages": [
       {
@@ -136,8 +136,8 @@ curl https://api.anthropic.com/v1/messages \
           {
             "type": "document",
             "source": {
-              "type": "file",
-              "file_id": "file_01ABC123DEF456"
+              "type": "url",
+              "url": "https://example.com/document.pdf"
             }
           },
           {
@@ -283,7 +283,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "messages": [
       {
@@ -291,11 +291,11 @@ curl https://api.anthropic.com/v1/messages \
         "content": [
           {
             "type": "document",
-            "source": {"type": "file", "file_id": "'"$FILE1_ID"'"}
+            "source": {"type": "url", "url": "https://example.com/contract_v1.pdf"}
           },
           {
             "type": "document",
-            "source": {"type": "file", "file_id": "'"$FILE2_ID"'"}
+            "source": {"type": "url", "url": "https://example.com/contract_v2.pdf"}
           },
           {
             "type": "text",
@@ -370,12 +370,12 @@ ask_question() {
     -H "anthropic-beta: files-api-2025-04-14" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-5-20250514",
+      "model": "claude-sonnet-4-5-20250929",
       "max_tokens": 2048,
       "messages": [{
         "role": "user",
         "content": [
-          {"type": "document", "source": {"type": "file", "file_id": "'"$FILE_ID"'"}},
+          {"type": "document", "source": {"type": "url", "url": "https://example.com/'"$FILENAME"'"}},
           {"type": "text", "text": "'"$question"'"}
         ]
       }]

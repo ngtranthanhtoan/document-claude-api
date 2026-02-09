@@ -61,7 +61,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$HITL_SYSTEM_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: $system,
       tools: [
@@ -185,7 +185,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "tools": [...],
     "messages": [
@@ -278,7 +278,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$FINANCIAL_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: $system,
       tools: [
@@ -354,7 +354,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$APPROVAL_LEVELS_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: $system,
       tools: [
@@ -467,7 +467,7 @@ chat_with_approval() {
       -H "anthropic-version: 2023-06-01" \
       -H "content-type: application/json" \
       -d "$(jq -n --argjson msgs "$MESSAGES" '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 2048,
         system: "You are a helpful assistant. For any action that could have side effects (sending emails, modifying data, transactions), use request_approval first.",
         tools: [

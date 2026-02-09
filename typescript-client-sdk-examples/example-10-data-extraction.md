@@ -39,7 +39,7 @@ const client = new Anthropic();
 const invoiceImage = fs.readFileSync("invoice.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   tool_choice: { type: "tool", name: "extract_invoice" },
   tools: [
@@ -209,9 +209,9 @@ const InvoiceSchema = z.object({
 });
 
 const message = await client.messages.parse({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
-  output_format: zodOutputFormat(InvoiceSchema, "invoice"),
+  output_config: { format: zodOutputFormat(InvoiceSchema) },
   messages: [
     {
       role: "user",
@@ -283,7 +283,7 @@ const client = new Anthropic();
 const receiptImage = fs.readFileSync("receipt.jpg").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   tool_choice: { type: "tool", name: "extract_receipt" },
   tools: [
@@ -404,9 +404,9 @@ const ContactSchema = z.object({
 });
 
 const message = await client.messages.parse({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
-  output_format: zodOutputFormat(ContactSchema, "contact"),
+  output_config: { format: zodOutputFormat(ContactSchema) },
   messages: [
     {
       role: "user",
@@ -471,7 +471,7 @@ const client = new Anthropic();
 const tableImage = fs.readFileSync("spreadsheet.png").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -549,7 +549,7 @@ const batchRequests: Anthropic.Messages.BatchCreateParams.Request[] =
     return {
       custom_id: `invoice-${index + 1}`,
       params: {
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 2048,
         tool_choice: {
           type: "tool" as const,
@@ -699,9 +699,9 @@ const FormSchema = z.object({
 });
 
 const message = await client.messages.parse({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
-  output_format: zodOutputFormat(FormSchema, "form_data"),
+  output_config: { format: zodOutputFormat(FormSchema) },
   messages: [
     {
       role: "user",
@@ -894,9 +894,9 @@ async function extractData(
     "Extract all structured data from this document. Identify the document type, extract all entities, line items, totals, and full text content.";
 
   const message = await client.messages.parse({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
-    output_format: zodOutputFormat(ExtractionSchema, "extraction"),
+    output_config: { format: zodOutputFormat(ExtractionSchema) },
     messages: [
       {
         role: "user",

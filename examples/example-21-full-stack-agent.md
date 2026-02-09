@@ -95,7 +95,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: web-fetch-2025-09-10" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tool_choice": {"type": "tool", "name": "web_search"},
     "tools": [
@@ -221,7 +221,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -368,7 +368,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: advanced-tool-use-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -457,7 +457,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 8192,
     "container": {
       "skills": [
@@ -497,7 +497,7 @@ for i in $(seq 1 10); do
       --argjson msgs "$MESSAGES" \
       --arg cid "$CONTAINER_ID" \
       '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 8192,
         container: (
           if $cid == "" then {skills: [{type: "anthropic", skill_id: "xlsx", version: "latest"}, {type: "anthropic", skill_id: "pptx", version: "latest"}]}
@@ -562,7 +562,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: computer-use-2025-01-24" \
   -H "content-type: application/json" \
   -d "$(jq -n --arg img "$SCREENSHOT" '{
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     tools: [{
       type: "computer_20241022",
@@ -703,7 +703,7 @@ curl -N https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "stream": true,
     "tools": [
@@ -800,7 +800,7 @@ curl -N https://api.anthropic.com/v1/messages \
 # Combines all advanced Claude tools in a phased pipeline
 
 ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
-MODEL="claude-sonnet-4-5-20250514"
+MODEL="claude-sonnet-4-5-20250929"
 WORKSPACE="/tmp/fullstack_agent_workspace"
 MAX_ITERATIONS=10
 

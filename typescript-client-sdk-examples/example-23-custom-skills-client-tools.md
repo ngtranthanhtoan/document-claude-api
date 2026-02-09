@@ -91,7 +91,7 @@ const client = new Anthropic();
 
 // No beta required — use client.messages.create() directly
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   tools: [
     {
@@ -153,7 +153,7 @@ if (toolUse && toolUse.type === "tool_use") {
 
   // Send the result back to Claude
   const finalResponse = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 1024,
     tools: [{ type: "bash_20250124", name: "bash" }],
     messages: [
@@ -212,7 +212,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   tools: [
     {
@@ -352,7 +352,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   tools: [
     {
@@ -583,7 +583,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     {
@@ -724,7 +724,7 @@ async function executeWebFetchSafe(input: {
 
 ```typescript
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     { type: "bash_20250124", name: "bash" } as any,
@@ -904,7 +904,7 @@ function buildSystemPrompt(skillNames: string[]): string {
 const systemPrompt = buildSystemPrompt(["data-validator", "test-runner"]);
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   system: systemPrompt,
   tools: [
@@ -956,7 +956,7 @@ const systemPrompt = buildSystemPrompt(["data-validator", "test-runner"]);
 
 // Claude can now use both skills in one conversation
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   system: systemPrompt,
   tools: [
@@ -984,7 +984,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   tools: [
     { type: "bash_20250124", name: "bash" } as any,
@@ -1170,7 +1170,7 @@ async function runAgent(task: string) {
     console.log(`\n=== Iteration ${i + 1} ===`);
 
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       tools,
       messages,

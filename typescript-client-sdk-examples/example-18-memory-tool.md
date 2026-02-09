@@ -61,7 +61,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   system:
@@ -183,7 +183,7 @@ const client = new Anthropic();
 
 // First session - user provides information
 const session1 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   tools: [{ type: "memory_20250627", name: "memory" }],
@@ -211,7 +211,7 @@ Claude stores:
 ```typescript
 // Later session - Claude remembers
 const session2 = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   tools: [{ type: "memory_20250627", name: "memory" }],
@@ -240,7 +240,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   tools: [
@@ -288,7 +288,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   tools: [
@@ -408,7 +408,7 @@ function executeTool(
 
 // Ask Claude about stored information
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   system:
     "You are an assistant with persistent memory. At the start of each conversation, read /tmp/agent_memory.json to recall previous information. Update the file when you learn important new facts.",
@@ -496,7 +496,7 @@ async function chat(userInput: string): Promise<void> {
 
   while (true) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system:
         "You are an assistant with persistent memory. Use the memory tool to store and retrieve important information across conversations. Store user preferences, facts, and context.",
@@ -622,7 +622,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.beta.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   betas: ["context-management-2025-06-27"],
   system:

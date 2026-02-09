@@ -142,7 +142,7 @@ const tools: Anthropic.Tool[] = [
 ];
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   tools,
@@ -235,7 +235,7 @@ const messages: Anthropic.MessageParam[] = [
 ];
 
 const response = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   tools,
@@ -315,7 +315,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: `You are a financial assistant. For any transaction over $100, you must:
 1. Use get_confirmation_code to generate a code
@@ -388,7 +388,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: `You are an operations assistant. Different actions require different approval levels:
 
@@ -618,7 +618,7 @@ async function chat(userMessage: string): Promise<void> {
 
   while (true) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: systemPrompt,
       tools,

@@ -12,10 +12,7 @@ async function main() {
   const tmpDir = path.join(import.meta.dirname, "..", "tmp");
   if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 
-  const sampleFilePath = path.join(tmpDir, "sample-document.txt");
-  fs.writeFileSync(
-    sampleFilePath,
-    `Product Requirements Document
+  const sampleContent = `Product Requirements Document
 
 Title: User Authentication System v2.0
 Author: Engineering Team
@@ -48,8 +45,10 @@ This document outlines the requirements for upgrading the authentication system 
 - Phase 1 (Q1): OAuth 2.0 implementation
 - Phase 2 (Q2): MFA rollout
 - Phase 3 (Q3): SSO integration
-`
-  );
+`;
+
+  const sampleFilePath = path.join(tmpDir, "sample-document.txt");
+  fs.writeFileSync(sampleFilePath, sampleContent);
 
   // ─── Step 1: Upload a File ───
   printHeader("Step 1: Upload a File");
@@ -69,113 +68,76 @@ This document outlines the requirements for upgrading the authentication system 
   console.log("Filename:", file.filename);
   console.log("MIME Type:", file.mime_type);
   console.log("Size:", file.size_bytes, "bytes");
-  console.log("Expires:", file.expires_at);
 
-  // ─── Step 2: Use File in Messages ───
-  printHeader("Step 2: Use File in Messages");
+  // ─── Step 2: Use File Content in Messages ───
+  printHeader("Step 2: Use File Content in Messages");
 
-  const msg1 = await client.beta.messages.create(
-    {
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 4096,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "document",
-              source: {
-                type: "file",
-                file_id: file.id,
-              },
-            },
-            {
+  // Files API files are designed for container/code-execution workflows.
+  // For messages, use the file content as a text document source:
+  const msg1 = await client.messages.create({
+    model: "claude-sonnet-4-5-20250929",
+    max_tokens: 4096,
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "document",
+            source: {
               type: "text",
-              text: "Summarize this document in 3 bullet points.",
+              media_type: "text/plain",
+              data: sampleContent,
             },
-          ],
-        },
-      ],
-    },
-    { betas: ["files-api-2025-04-14"] }
-  );
+            title: file.filename,
+          },
+          {
+            type: "text",
+            text: "Summarize this document in 3 bullet points.",
+          },
+        ],
+      },
+    ],
+  });
 
   const textBlock1 = msg1.content.find((block) => block.type === "text");
   if (textBlock1 && textBlock1.type === "text") {
     console.log(textBlock1.text);
   }
 
-  // ─── Step 3: Follow-up Question (Reuse File) ───
-  printHeader("Step 3: Follow-up Question (Reusing Same File)");
+  // ─── Step 3: Retrieve File Metadata ───
+  printHeader("Step 3: Retrieve File Metadata");
 
-  const msg2 = await client.beta.messages.create(
-    {
-      model: "claude-sonnet-4-5-20250929",
-      max_tokens: 4096,
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "document",
-              source: {
-                type: "file",
-                file_id: file.id,
-              },
-            },
-            {
-              type: "text",
-              text: "What security considerations are mentioned? List them all.",
-            },
-          ],
-        },
-      ],
-    },
-    { betas: ["files-api-2025-04-14"] }
-  );
-
-  const textBlock2 = msg2.content.find((block) => block.type === "text");
-  if (textBlock2 && textBlock2.type === "text") {
-    console.log(textBlock2.text);
-  }
-
-  // ─── Step 4: Get File Metadata ───
-  printHeader("Step 4: Get File Metadata");
-
-  const metadata = await client.beta.files.retrieve(file.id, {
-    betas: ["files-api-2025-04-14"],
-  });
+  const metadata = await client.beta.files.retrieveMetadata(file.id);
 
   console.log("File ID:", metadata.id);
   console.log("Filename:", metadata.filename);
   console.log("MIME Type:", metadata.mime_type);
   console.log("Size:", metadata.size_bytes, "bytes");
   console.log("Created:", metadata.created_at);
-  console.log("Expires:", metadata.expires_at);
 
-  // ─── Step 5: List All Files ───
-  printHeader("Step 5: List All Files");
+  // ─── Step 4: List All Files ───
+  printHeader("Step 4: List All Files");
 
-  const files = await client.beta.files.list({
-    betas: ["files-api-2025-04-14"],
-  });
-
-  for (const f of files.data) {
-    console.log(`${f.id} - ${f.filename} (${f.size_bytes} bytes, expires: ${f.expires_at})`);
+  let fileCount = 0;
+  for await (const f of client.beta.files.list()) {
+    console.log(`${f.id} - ${f.filename} (${f.size_bytes} bytes)`);
+    fileCount++;
+    if (fileCount >= 10) {
+      console.log("(showing first 10 files only)");
+      break;
+    }
   }
+  if (fileCount === 0) console.log("No files found.");
 
-  // ─── Step 6: Delete the File ───
-  printHeader("Step 6: Delete the File");
+  // ─── Step 5: Delete the File ───
+  printHeader("Step 5: Delete the File");
 
-  const result = await client.beta.files.delete(file.id, {
-    betas: ["files-api-2025-04-14"],
-  });
+  const result = await client.beta.files.delete(file.id);
 
-  console.log("Deleted:", result.id, "—", result.deleted);
+  console.log("Deleted:", result.id);
 
   // Cleanup temp file
   fs.unlinkSync(sampleFilePath);
-  fs.rmdirSync(tmpDir, { recursive: true });
 
   console.log("\nFiles API example completed!");
 }

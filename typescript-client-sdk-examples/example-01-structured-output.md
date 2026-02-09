@@ -36,7 +36,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system:
     "You are a data extraction assistant. Always respond with valid JSON matching the requested schema. Never include markdown formatting, explanations, or any text outside the JSON object.",
@@ -106,7 +106,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system:
     "You are a sentiment analysis system. Analyze the provided text and use the record_sentiment tool to output your analysis.",
@@ -214,7 +214,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
   tool_choice: { type: "tool", name: "extract_entities" },
   tools: [
@@ -311,9 +311,9 @@ const JobPostingSchema = z.object({
 });
 
 const message = await client.messages.parse({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
-  output_format: zodOutputFormat(JobPostingSchema, "job_posting"),
+  output_config: { format: zodOutputFormat(JobPostingSchema) },
   messages: [
     {
       role: "user",
@@ -374,7 +374,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-haiku-4-5-20250514",
+  model: "claude-haiku-4-5-20251001",
   max_tokens: 500,
   tool_choice: { type: "tool", name: "classify_ticket" },
   tools: [

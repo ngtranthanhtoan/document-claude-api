@@ -33,7 +33,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "tool_choice": {"type": "tool", "name": "extract_invoice"},
     "tools": [
@@ -162,7 +162,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tool_choice": {"type": "tool", "name": "extract_receipt"},
     "tools": [
@@ -233,7 +233,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tool_choice": {"type": "tool", "name": "extract_contact"},
     "tools": [
@@ -295,7 +295,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "messages": [
       {
@@ -337,7 +337,7 @@ curl https://api.anthropic.com/v1/messages/batches \
       {
         "custom_id": "invoice-001",
         "params": {
-          "model": "claude-sonnet-4-5-20250514",
+          "model": "claude-sonnet-4-5-20250929",
           "max_tokens": 2048,
           "messages": [{
             "role": "user",
@@ -351,7 +351,7 @@ curl https://api.anthropic.com/v1/messages/batches \
       {
         "custom_id": "invoice-002",
         "params": {
-          "model": "claude-sonnet-4-5-20250514",
+          "model": "claude-sonnet-4-5-20250929",
           "max_tokens": 2048,
           "messages": [{
             "role": "user",
@@ -380,7 +380,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tool_choice": {"type": "tool", "name": "extract_form"},
     "tools": [
@@ -474,7 +474,7 @@ REQUEST=$(jq -n \
   --arg media "$MEDIA_TYPE" \
   --arg type "$TYPE" \
   '{
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [{
       role: "user",

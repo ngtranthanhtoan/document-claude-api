@@ -153,9 +153,7 @@ File Upload to Container:
 
 File Download from Container:
   // Extract file_id from code execution results
-  const content = await client.beta.files.retrieveContent(fileId, {
-    betas: ["files-api-2025-04-14"]
-  });
+  const content = await client.beta.files.download(fileId);
   const buffer = Buffer.from(await content.arrayBuffer());
   fs.writeFileSync("output.xlsx", buffer);
 `);

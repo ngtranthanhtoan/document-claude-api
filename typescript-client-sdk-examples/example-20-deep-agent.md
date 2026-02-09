@@ -269,7 +269,7 @@ Orchestrator ──> delegate_task ──> Host System ──> New API call ─�
 ```typescript
 const client = new Anthropic();
 
-const SUBAGENT_MODEL = "claude-sonnet-4-5-20250514";
+const SUBAGENT_MODEL = "claude-sonnet-4-5-20250929";
 const SUBAGENT_MAX_ITERATIONS = 10;
 
 const subagentTools: Anthropic.Messages.Tool[] = [
@@ -404,8 +404,8 @@ import * as path from "path";
 const client = new Anthropic();
 
 // Configuration
-const MODEL = "claude-sonnet-4-5-20250514";
-const SUBAGENT_MODEL = "claude-sonnet-4-5-20250514";
+const MODEL = "claude-sonnet-4-5-20250929";
+const SUBAGENT_MODEL = "claude-sonnet-4-5-20250929";
 const MAX_ITERATIONS = 20;
 const SUBAGENT_MAX_ITERATIONS = 10;
 const WORKSPACE = "/tmp/deep_agent_workspace";
@@ -713,9 +713,9 @@ runOrchestrator(
 
 | Strategy | Orchestrator | Subagents | Trade-off |
 |----------|-------------|-----------|-----------|
-| **All Sonnet** | claude-sonnet-4-5-20250514 | claude-sonnet-4-5-20250514 | Best quality, higher cost |
-| **Mixed models** | claude-sonnet-4-5-20250514 | claude-haiku-4-5-20250514 | Good balance for simple subtasks |
-| **Budget** | claude-haiku-4-5-20250514 | claude-haiku-4-5-20250514 | Lowest cost, simpler tasks only |
+| **All Sonnet** | claude-sonnet-4-5-20250929 | claude-sonnet-4-5-20250929 | Best quality, higher cost |
+| **Mixed models** | claude-sonnet-4-5-20250929 | claude-haiku-4-5-20251001 | Good balance for simple subtasks |
+| **Budget** | claude-haiku-4-5-20251001 | claude-haiku-4-5-20251001 | Lowest cost, simpler tasks only |
 
 ---
 

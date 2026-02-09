@@ -88,7 +88,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tools": [
       {
@@ -142,7 +142,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg output "$OUTPUT" \
     '{
-      "model": "claude-sonnet-4-5-20250514",
+      "model": "claude-sonnet-4-5-20250929",
       "max_tokens": 1024,
       "tools": [{"type": "bash_20250124", "name": "bash"}],
       "messages": [
@@ -185,7 +185,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tools": [
       {
@@ -267,7 +267,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "tools": [
       {
@@ -462,7 +462,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -610,7 +610,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {"type": "bash_20250124", "name": "bash"},
@@ -795,7 +795,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$SYSTEM_PROMPT" \
     '{
-      "model": "claude-sonnet-4-5-20250514",
+      "model": "claude-sonnet-4-5-20250929",
       "max_tokens": 4096,
       "system": $system,
       "tools": [
@@ -852,7 +852,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$SYSTEM_PROMPT" \
     '{
-      "model": "claude-sonnet-4-5-20250514",
+      "model": "claude-sonnet-4-5-20250929",
       "max_tokens": 4096,
       "system": $system,
       "tools": [
@@ -879,7 +879,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {"type": "bash_20250124", "name": "bash"},
@@ -1028,7 +1028,7 @@ for i in $(seq 1 $MAX_ITERATIONS); do
       --argjson tools "$TOOLS" \
       --argjson msgs "$MESSAGES" \
       '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         tools: $tools,
         messages: $msgs

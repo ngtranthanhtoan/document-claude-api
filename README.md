@@ -87,7 +87,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 100,
     "messages": [{"role": "user", "content": "Hi"}]
   }'
@@ -100,7 +100,7 @@ curl https://api.anthropic.com/v1/messages \
   "type": "message",
   "role": "assistant",
   "content": [{"type": "text", "text": "Hello! How can I help you today?"}],
-  "model": "claude-sonnet-4-5-20250514",
+  "model": "claude-sonnet-4-5-20250929",
   "stop_reason": "end_turn",
   "usage": {"input_tokens": 8, "output_tokens": 12}
 }
@@ -115,8 +115,8 @@ curl https://api.anthropic.com/v1/messages \
 | Model | Model ID | Context | Max Output | Input $/M | Output $/M |
 |-------|----------|---------|------------|-----------|------------|
 | **Opus 4.5** | `claude-opus-4-5-20251101` | 200K | 32K | $5 | $25 |
-| **Sonnet 4.5** | `claude-sonnet-4-5-20250514` | 200K | 16K | $3 | $15 |
-| **Haiku 4.5** | `claude-haiku-4-5-20250514` | 200K | 8K | $1 | $5 |
+| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | 200K | 16K | $3 | $15 |
+| **Haiku 4.5** | `claude-haiku-4-5-20251001` | 200K | 8K | $1 | $5 |
 
 ### Model Selection Guide
 
@@ -159,7 +159,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "messages": [
       {"role": "user", "content": "Explain quantum computing in 3 sentences."}
@@ -175,7 +175,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "system": "You are a helpful Python developer. Always provide code examples.",
     "messages": [
@@ -192,7 +192,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "messages": [
       {"role": "user", "content": "What is Python?"},
@@ -212,7 +212,7 @@ curl https://api.anthropic.com/v1/messages \
   "content": [
     {"type": "text", "text": "Response text here..."}
   ],
-  "model": "claude-sonnet-4-5-20250514",
+  "model": "claude-sonnet-4-5-20250929",
   "stop_reason": "end_turn",
   "usage": {"input_tokens": 18, "output_tokens": 103}
 }
@@ -241,7 +241,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "stream": true,
     "messages": [{"role": "user", "content": "Write a haiku."}]
@@ -268,7 +268,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "tools": [{
       "name": "get_weather",
@@ -303,7 +303,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "messages": [{
       "role": "user",
@@ -331,7 +331,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "messages": [{
       "role": "user",
@@ -357,13 +357,12 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
-    "citations": {"enabled": true},
     "messages": [{
       "role": "user",
       "content": [
-        {"type": "document", "source": {"type": "text", "content": "Document content here..."}},
+        {"type": "document", "source": {"type": "text", "media_type": "text/plain", "data": "Document content here..."}, "citations": {"enabled": true}},
         {"type": "text", "text": "What does the document say about X?"}
       ]
     }]
@@ -384,7 +383,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 16000,
     "thinking": {"type": "enabled", "budget_tokens": 10000},
     "messages": [{"role": "user", "content": "Solve this logic puzzle..."}]
@@ -405,7 +404,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "system": [{
       "type": "text",
@@ -435,8 +434,8 @@ curl https://api.anthropic.com/v1/messages/batches \
   -H "content-type: application/json" \
   -d '{
     "requests": [
-      {"custom_id": "req-1", "params": {"model": "claude-haiku-4-5-20250514", "max_tokens": 500, "messages": [{"role": "user", "content": "Task 1"}]}},
-      {"custom_id": "req-2", "params": {"model": "claude-haiku-4-5-20250514", "max_tokens": 500, "messages": [{"role": "user", "content": "Task 2"}]}}
+      {"custom_id": "req-1", "params": {"model": "claude-haiku-4-5-20251001", "max_tokens": 500, "messages": [{"role": "user", "content": "Task 1"}]}},
+      {"custom_id": "req-2", "params": {"model": "claude-haiku-4-5-20251001", "max_tokens": 500, "messages": [{"role": "user", "content": "Task 2"}]}}
     ]
   }'
 ```
@@ -461,21 +460,20 @@ curl https://api.anthropic.com/v1/files \
   -H "anthropic-beta: files-api-2025-04-14" \
   -F "file=@document.pdf"
 
-# Reference in message
+# Use uploaded file in a container (for code execution workflows)
 curl https://api.anthropic.com/v1/messages \
   -H "x-api-key: $ANTHROPIC_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
-  -H "anthropic-beta: files-api-2025-04-14" \
+  -H "anthropic-beta: files-api-2025-04-14,code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
+    "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
+    "container": {"files": [{"file_id": "file_xxx", "path": "/uploads/document.pdf"}]},
     "messages": [{
       "role": "user",
-      "content": [
-        {"type": "document", "source": {"type": "file", "file_id": "file_xxx"}},
-        {"type": "text", "text": "Summarize this document."}
-      ]
+      "content": "Read and summarize the uploaded document at /uploads/document.pdf"
     }]
   }'
 ```
@@ -527,7 +525,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": {
       "skills": [
@@ -557,7 +555,7 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "messages": [{"role": "user", "content": "Hello world"}]
   }'
 ```

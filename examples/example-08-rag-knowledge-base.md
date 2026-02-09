@@ -56,7 +56,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": [
       {
@@ -113,7 +113,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": [
       {
@@ -186,7 +186,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": [
       {
@@ -218,9 +218,8 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
-    "citations": {"enabled": true},
     "messages": [
       {
         "role": "user",
@@ -233,6 +232,7 @@ curl https://api.anthropic.com/v1/messages \
               "data": "[Documentation content here...]"
             },
             "title": "Product Documentation v2.0",
+            "citations": {"enabled": true},
             "cache_control": {"type": "ephemeral"}
           },
           {
@@ -259,7 +259,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": [{"type": "text", "text": "[DOCS]", "cache_control": {"type": "ephemeral"}}],
     "messages": [
@@ -276,7 +276,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": [{"type": "text", "text": "[DOCS]", "cache_control": {"type": "ephemeral"}}],
     "messages": [
@@ -331,7 +331,7 @@ ask() {
       --arg docs "$DOCS" \
       --arg q "$question" \
       '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 2048,
         system: [{
           type: "text",

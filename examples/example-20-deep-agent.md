@@ -211,7 +211,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$ORCHESTRATOR_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 4096,
       system: $system,
       tools: [
@@ -465,8 +465,8 @@ After verifying the research is good:
 # Deep Agent: Orchestrator with Planning, Filesystem, and Subagent Delegation
 
 ANTHROPIC_API_KEY="${ANTHROPIC_API_KEY}"
-MODEL="claude-sonnet-4-5-20250514"
-SUBAGENT_MODEL="claude-sonnet-4-5-20250514"  # Use haiku for cost savings
+MODEL="claude-sonnet-4-5-20250929"
+SUBAGENT_MODEL="claude-sonnet-4-5-20250929"  # Use haiku for cost savings
 MAX_ITERATIONS=20
 SUBAGENT_MAX_ITERATIONS=10
 WORKSPACE="/tmp/deep_agent_workspace"
@@ -729,9 +729,9 @@ run_orchestrator "Write a technical blog post about WebAssembly covering its his
 
 | Strategy | Orchestrator | Subagents | Trade-off |
 |----------|-------------|-----------|-----------|
-| **All Sonnet** | claude-sonnet-4-5-20250514 | claude-sonnet-4-5-20250514 | Best quality, higher cost |
-| **Mixed models** | claude-sonnet-4-5-20250514 | claude-haiku-4-5-20250514 | Good balance for simple subtasks |
-| **Budget** | claude-haiku-4-5-20250514 | claude-haiku-4-5-20250514 | Lowest cost, simpler tasks only |
+| **All Sonnet** | claude-sonnet-4-5-20250929 | claude-sonnet-4-5-20250929 | Best quality, higher cost |
+| **Mixed models** | claude-sonnet-4-5-20250929 | claude-haiku-4-5-20251001 | Good balance for simple subtasks |
+| **Budget** | claude-haiku-4-5-20251001 | claude-haiku-4-5-20251001 | Lowest cost, simpler tasks only |
 
 Key considerations:
 

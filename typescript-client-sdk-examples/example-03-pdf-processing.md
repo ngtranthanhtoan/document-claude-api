@@ -49,7 +49,7 @@ const client = new Anthropic();
 const pdfBase64 = fs.readFileSync("document.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -113,7 +113,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -158,7 +158,7 @@ const client = new Anthropic();
 const contractPdf = fs.readFileSync("contract.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -231,7 +231,7 @@ const client = new Anthropic();
 const invoicePdf = fs.readFileSync("invoice.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   messages: [
     {
@@ -291,7 +291,7 @@ const client = new Anthropic();
 const multiPagePdf = fs.readFileSync("research-paper.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 8000,
   messages: [
     {
@@ -341,7 +341,7 @@ const client = new Anthropic();
 const pdfWithTables = fs.readFileSync("financial-report.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -391,7 +391,7 @@ const contractV1 = fs.readFileSync("contract-v1.pdf").toString("base64");
 const contractV2 = fs.readFileSync("contract-v2.pdf").toString("base64");
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 4096,
   messages: [
     {
@@ -483,7 +483,7 @@ async function processPdf(
 
   // Create message request
   const message = await client.messages.create({
-    model: "claude-sonnet-4-5-20250514",
+    model: "claude-sonnet-4-5-20250929",
     max_tokens: 4096,
     messages: [
       {

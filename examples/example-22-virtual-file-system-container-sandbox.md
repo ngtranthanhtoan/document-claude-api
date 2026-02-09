@@ -100,7 +100,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [
       {
@@ -175,7 +175,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [
@@ -209,7 +209,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [
@@ -259,7 +259,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [
@@ -398,7 +398,7 @@ RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [
@@ -423,7 +423,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": "'$CONTAINER_ID'",
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
@@ -445,7 +445,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": "'$CONTAINER_ID'",
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
@@ -500,7 +500,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [{
@@ -524,7 +524,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [{
@@ -546,7 +546,7 @@ RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [{
@@ -564,7 +564,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": "'$CONTAINER_ID'",
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
@@ -611,7 +611,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [
@@ -717,7 +717,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": {
       "skills": [
@@ -756,7 +756,7 @@ RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": {
       "skills": [{"type": "anthropic", "skill_id": "xlsx", "version": "latest"}]
@@ -776,7 +776,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "container": {
       "id": "'$CONTAINER_ID'",
@@ -825,7 +825,7 @@ for i in $(seq 1 $MAX_RETRIES); do
       --argjson msgs "$MESSAGES" \
       --arg cid "${CONTAINER_ID:-}" \
       '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 4096,
         container: (if $cid == "" then {skills: [{type:"anthropic",skill_id:"xlsx",version:"latest"}]} else {id: $cid, skills: [{type:"anthropic",skill_id:"xlsx",version:"latest"}]} end),
         tools: [{type: "code_execution_20250825", name: "code_execution"}],
@@ -858,7 +858,7 @@ RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
     "container": "'$CONTAINER_ID'",
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
@@ -955,7 +955,7 @@ RESPONSE=$(curl -s "$API_URL/messages" \
   -H "anthropic-beta: code-execution-2025-08-25,files-api-2025-04-14" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 8192,
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],
     "messages": [{
@@ -989,7 +989,7 @@ for i in $(seq 1 $MAX_RETRIES); do
       --argjson msgs "$MESSAGES" \
       --arg cid "$CONTAINER_ID" \
       '{
-        model: "claude-sonnet-4-5-20250514",
+        model: "claude-sonnet-4-5-20250929",
         max_tokens: 8192,
         container: {id: $cid, skills: [{type:"anthropic",skill_id:"xlsx",version:"latest"}]},
         tools: [{type:"code_execution_20250825",name:"code_execution"}],
@@ -1019,7 +1019,7 @@ VERIFY=$(curl -s "$API_URL/messages" \
   -H "anthropic-beta: code-execution-2025-08-25" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "container": "'$CONTAINER_ID'",
     "tools": [{"type": "code_execution_20250825", "name": "code_execution"}],

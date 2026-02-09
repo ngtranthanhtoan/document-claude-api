@@ -62,7 +62,7 @@ const batch = await client.messages.batches.create({
     {
       custom_id: "product-001",
       params: {
-        model: "claude-haiku-4-5-20250514",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 500,
         messages: [
           {
@@ -76,7 +76,7 @@ const batch = await client.messages.batches.create({
     {
       custom_id: "product-002",
       params: {
-        model: "claude-haiku-4-5-20250514",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 500,
         messages: [
           {
@@ -90,7 +90,7 @@ const batch = await client.messages.batches.create({
     {
       custom_id: "product-003",
       params: {
-        model: "claude-haiku-4-5-20250514",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 500,
         messages: [
           {
@@ -300,7 +300,7 @@ async function processBatch(tasks: ProductTask[]): Promise<void> {
     tasks.map((task) => ({
       custom_id: task.id,
       params: {
-        model: "claude-haiku-4-5-20250514",
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 500,
         messages: [
           {

@@ -47,7 +47,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [
       {
@@ -165,7 +165,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [
       {
@@ -208,7 +208,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [
       {
@@ -287,7 +287,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [
       {
@@ -345,7 +345,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [{
       "type": "url",
@@ -375,7 +375,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-beta: mcp-client-2025-11-20" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 4096,
     "mcp_servers": [
       {

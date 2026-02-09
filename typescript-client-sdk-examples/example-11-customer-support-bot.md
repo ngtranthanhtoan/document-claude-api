@@ -161,7 +161,7 @@ const tools: Anthropic.Tool[] = [
 ];
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   tools,
@@ -259,7 +259,7 @@ const messages: Anthropic.MessageParam[] = [
 ];
 
 const response = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: systemPrompt,
   tools,
@@ -331,7 +331,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const client = new Anthropic();
 
 const message = await client.messages.create({
-  model: "claude-sonnet-4-5-20250514",
+  model: "claude-sonnet-4-5-20250929",
   max_tokens: 2048,
   system: `You are a customer support agent. Detect customer sentiment and adjust your response accordingly:
 - Frustrated/Angry: Lead with empathy, acknowledge feelings, prioritize solutions
@@ -524,7 +524,7 @@ async function chat(userMessage: string): Promise<void> {
 
   while (true) {
     const response = await client.messages.create({
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: systemPrompt,
       tools,

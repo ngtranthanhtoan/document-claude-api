@@ -70,7 +70,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$SUPPORT_SYSTEM_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: $system,
       tools: [
@@ -201,7 +201,7 @@ curl https://api.anthropic.com/v1/messages \
   -H "anthropic-version: 2023-06-01" \
   -H "content-type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-5-20250514",
+    "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 2048,
     "system": "[Same system prompt as above]",
     "tools": [...],
@@ -308,7 +308,7 @@ curl https://api.anthropic.com/v1/messages \
   -d "$(jq -n \
     --arg system "$SENTIMENT_PROMPT" \
     '{
-      model: "claude-sonnet-4-5-20250514",
+      model: "claude-sonnet-4-5-20250929",
       max_tokens: 2048,
       system: $system,
       messages: [
@@ -385,7 +385,7 @@ chat() {
       -d "$(jq -n \
         --argjson messages "$MESSAGES" \
         '{
-          model: "claude-sonnet-4-5-20250514",
+          model: "claude-sonnet-4-5-20250929",
           max_tokens: 2048,
           system: "You are a helpful customer support agent.",
           tools: [

@@ -68,9 +68,7 @@ Skills use the Code Execution tool with a container that has skill files pre-loa
         console.log(`  File ID: ${fileId}`);
         // Download the file
         try {
-          const fileContent = await client.beta.files.retrieveContent(fileId, {
-            betas: ["files-api-2025-04-14"],
-          });
+          const fileContent = await client.beta.files.download(fileId);
           const buffer = Buffer.from(await fileContent.arrayBuffer());
           const outputPath = path.join(import.meta.dirname, "..", "tmp", `output-${fileId.slice(-8)}.xlsx`);
           const dir = path.dirname(outputPath);
