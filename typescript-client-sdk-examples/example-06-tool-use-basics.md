@@ -6,21 +6,23 @@
 
 - **Difficulty**: Intermediate
 - **Features Used**: Tool Use (Function Calling)
-- **SDK Methods**: `client.messages.create()`, `zodTool()`, `client.beta.messages.toolRunner()`
+- **SDK Methods**: `client.messages.create()`, `zodTool()`, `client.beta.messages.create()`
 - **Use Cases**:
   - Weather lookup
   - Database queries
   - API integrations
   - Calculator operations
-  - Calendar scheduling
-  - Email sending
+  - Web search and content fetching
+  - Desktop automation (computer use)
+  - Sandboxed code execution
 
 ## Prerequisites
 
 - Node.js 20+ with TypeScript 4.9+
 - `@anthropic-ai/sdk`: `npm install @anthropic-ai/sdk`
-- `zod`: `npm install zod` (for Zod tool helpers)
+- `zod`: `npm install zod` (for Zod tool helpers, optional)
 - `ANTHROPIC_API_KEY` environment variable set
+- Web search enabled in [Anthropic Console](https://console.anthropic.com/settings/privacy) (for web search tool)
 
 ---
 
@@ -546,6 +548,380 @@ if (response.stop_reason === "tool_use") {
   }
 }
 ```
+
+---
+
+## Anthropic Built-in Tools
+
+Beyond user-defined custom tools, Anthropic provides **built-in tools** that Claude already knows how to use. These tools use a `type` field instead of `name`/`description`/`input_schema` — the schema is built into Claude's model.
+
+### Two Categories of Built-in Tools
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                   Anthropic Built-in Tools                      │
+├───────────────────────────┬─────────────────────────────────────┤
+│     Server Tools          │         Client Tools                │
+│  (Run on Anthropic's      │  (Anthropic-defined, but YOU        │
+│   servers automatically)  │   execute them on your side)        │
+│                           │                                     │
+│  • web_search_20250305    │  • text_editor_20250728             │
+│  • web_fetch_20250910     │  • bash_20250124                    │
+│  • code_execution_20250825│  • computer_20250124 / _20251124    │
+└───────────────────────────┴─────────────────────────────────────┘
+```
+
+### Key Difference: User-Defined vs Built-in Tools
+
+```typescript
+// ❌ User-defined tool — you provide name, description, input_schema
+{
+  name: "get_weather",
+  description: "Get current weather for a location",
+  input_schema: {
+    type: "object" as const,
+    properties: {
+      location: { type: "string" },
+    },
+    required: ["location"],
+  },
+}
+
+// ✅ Anthropic built-in tool — just specify the type
+{
+  type: "web_search_20250305",
+  name: "web_search",
+}
+```
+
+---
+
+### Server Tool: Web Search
+
+Web search runs entirely on Anthropic's servers. Claude decides when to search, executes the search, and incorporates results — no client-side implementation needed.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "web_search_20250305",
+      name: "web_search",
+      max_uses: 5,
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content: "What are the latest developments in quantum computing?",
+    },
+  ],
+});
+
+// Response includes search results and citations automatically
+for (const block of message.content) {
+  if (block.type === "text") {
+    console.log(block.text);
+  }
+}
+```
+
+#### Web Search with Domain Filtering and Localization
+
+```typescript
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "web_search_20250305",
+      name: "web_search",
+      max_uses: 3,
+      // Only search these domains
+      allowed_domains: ["arxiv.org", "nature.com", "science.org"],
+      // Localize search results
+      user_location: {
+        type: "approximate",
+        city: "San Francisco",
+        region: "California",
+        country: "US",
+        timezone: "America/Los_Angeles",
+      },
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content: "Find recent AI research papers about reasoning",
+    },
+  ],
+});
+```
+
+#### Web Search Response Structure
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "I'll search for that information."
+    },
+    {
+      "type": "server_tool_use",
+      "id": "srvtoolu_01WYG...",
+      "name": "web_search",
+      "input": { "query": "quantum computing developments 2025" }
+    },
+    {
+      "type": "web_search_tool_result",
+      "tool_use_id": "srvtoolu_01WYG...",
+      "content": [
+        {
+          "type": "web_search_result",
+          "url": "https://example.com/article",
+          "title": "Quantum Computing Breakthroughs",
+          "encrypted_content": "EqgfCio...",
+          "page_age": "January 15, 2025"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "text": "Based on recent search results, ...",
+      "citations": [
+        {
+          "type": "web_search_result_location",
+          "url": "https://example.com/article",
+          "title": "Quantum Computing Breakthroughs",
+          "cited_text": "Researchers announced..."
+        }
+      ]
+    }
+  ],
+  "usage": {
+    "input_tokens": 6039,
+    "output_tokens": 931,
+    "server_tool_use": {
+      "web_search_requests": 1
+    }
+  }
+}
+```
+
+---
+
+### Server Tool: Web Fetch (Beta)
+
+Web fetch retrieves full page content from URLs. Requires the beta header `web-fetch-2025-09-10`.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.beta.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 4096,
+  tools: [
+    {
+      type: "web_fetch_20250910",
+      name: "web_fetch",
+      max_uses: 5,
+      citations: { enabled: true },
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "Analyze the content at https://example.com/research-paper",
+    },
+  ],
+  betas: ["web-fetch-2025-09-10"],
+});
+```
+
+---
+
+### Server Tool: Code Execution (Beta)
+
+Code execution runs code in a secure, sandboxed environment on Anthropic's servers. Requires the beta header `code-execution-2025-08-25`.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.beta.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 4096,
+  tools: [
+    {
+      type: "code_execution_20250825",
+      name: "code_execution",
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "Calculate the mean and standard deviation of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+    },
+  ],
+  betas: ["code-execution-2025-08-25"],
+});
+```
+
+---
+
+### Client Tools: Text Editor + Bash (Computer Use)
+
+These are Anthropic-defined but **you must execute them** on your side and return results. They are commonly used together for computer use workflows.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+// Text editor and bash can be used without the computer use beta header
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "text_editor_20250728",
+      name: "str_replace_based_edit_tool",
+    },
+    {
+      type: "bash_20250124",
+      name: "bash",
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "There's a syntax error in my primes.py file. Can you fix it?",
+    },
+  ],
+});
+
+// You must execute the tool and return results back to Claude
+for (const block of message.content) {
+  if (block.type === "tool_use") {
+    console.log(`Tool: ${block.name}`);
+    console.log(`Command:`, block.input);
+    // Execute on your side, then send tool_result back
+  }
+}
+```
+
+### Full Computer Use (Beta)
+
+Combining all three client tools for desktop automation. Requires the computer use beta header.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.beta.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 1024,
+  tools: [
+    {
+      type: "computer_20250124",
+      name: "computer",
+      display_width_px: 1024,
+      display_height_px: 768,
+      display_number: 1,
+    },
+    {
+      type: "text_editor_20250728",
+      name: "str_replace_based_edit_tool",
+    },
+    {
+      type: "bash_20250124",
+      name: "bash",
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content: "Save a picture of a cat to my desktop.",
+    },
+  ],
+  betas: ["computer-use-2025-01-24"],
+});
+```
+
+---
+
+### Mixing Built-in and Custom Tools
+
+You can combine Anthropic built-in tools with your own custom tools in a single request.
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 2048,
+  tools: [
+    // Built-in server tool — no schema needed
+    {
+      type: "web_search_20250305",
+      name: "web_search",
+      max_uses: 3,
+    },
+    // Your custom tool — full schema required
+    {
+      name: "save_to_database",
+      description: "Save research findings to the database",
+      input_schema: {
+        type: "object" as const,
+        properties: {
+          title: { type: "string", description: "Title of the finding" },
+          summary: { type: "string", description: "Summary of the research" },
+          source_url: { type: "string", description: "Source URL" },
+        },
+        required: ["title", "summary"],
+      },
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "Search for recent breakthroughs in fusion energy and save the top finding to our database.",
+    },
+  ],
+});
+```
+
+---
+
+### Built-in Tools Reference
+
+| Tool | Type Identifier | Category | Beta Required | Pricing |
+|------|----------------|----------|---------------|---------|
+| Web Search | `web_search_20250305` | Server | No | $10 / 1,000 searches + tokens |
+| Web Fetch | `web_fetch_20250910` | Server | `web-fetch-2025-09-10` | Token costs only |
+| Code Execution | `code_execution_20250825` | Server | `code-execution-2025-08-25` | $0.05/hr (1,550 free hrs/mo) |
+| Text Editor | `text_editor_20250728` | Client | No | 700 extra input tokens |
+| Bash | `bash_20250124` | Client | No | 245 extra input tokens |
+| Computer Use | `computer_20250124` | Client | `computer-use-2025-01-24` | 735 extra input tokens |
+| Computer Use | `computer_20251124` | Client | `computer-use-2025-11-24` | 735 extra input tokens |
+
+> **Note**: Computer use tool version `computer_20251124` is for Claude Opus 4.5+ (with zoom action). All other models use `computer_20250124`. Text editor `text_editor_20250728` is for Claude 4.x models; Claude 3.7 uses `text_editor_20250124`.
 
 ---
 

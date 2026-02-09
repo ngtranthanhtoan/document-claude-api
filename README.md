@@ -678,12 +678,13 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 | 19 | [Agent Skills](examples/example-19-agent-skills.md) | Document generation (Excel, PowerPoint, Word, PDF) |
 | 20 | [Deep Agent](examples/example-20-deep-agent.md) | Planning, delegation, multi-agent orchestration |
 | 21 | [Full-Stack Autonomous Agent](examples/example-21-full-stack-agent.md) | All tools combined: search, fetch, bash, editor, code exec, skills, computer use, streaming |
+| 22 | [VFS, Container & Sandbox](examples/example-22-virtual-file-system-container-sandbox.md) | Container architecture, sandbox isolation, file persistence |
 
 ---
 
 ## TypeScript SDK Examples
 
-The same 21 examples above are also available as **TypeScript SDK** implementations using [`@anthropic-ai/sdk`](https://github.com/anthropics/anthropic-sdk-typescript). These provide native TypeScript patterns including typed responses, Zod helpers, streaming iterators, and automatic tool execution.
+The same 22 examples above are also available as **TypeScript SDK** implementations using [`@anthropic-ai/sdk`](https://github.com/anthropics/anthropic-sdk-typescript). These provide native TypeScript patterns including typed responses, Zod helpers, streaming iterators, and automatic tool execution.
 
 ### Getting Started
 
@@ -732,6 +733,7 @@ export ANTHROPIC_API_KEY="sk-ant-api03-..."
 | 19 | [Agent Skills](typescript-client-sdk-examples/example-19-agent-skills.md) | `code_execution_20250825` + container skills |
 | 20 | [Deep Agent](typescript-client-sdk-examples/example-20-deep-agent.md) | Orchestrator + typed subagent functions |
 | 21 | [Full-Stack Autonomous Agent](typescript-client-sdk-examples/example-21-full-stack-agent.md) | All tool types + fine-grained streaming |
+| 22 | [VFS, Container & Sandbox](typescript-client-sdk-examples/example-22-virtual-file-system-container-sandbox.md) | Container reuse + `container_upload` + Files API |
 
 ---
 
