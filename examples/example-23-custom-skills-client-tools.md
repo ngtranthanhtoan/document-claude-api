@@ -319,6 +319,33 @@ curl https://api.anthropic.com/v1/messages \
           },
           "required": ["query", "database"]
         }
+      },
+      {
+        "name": "web_fetch",
+        "description": "Fetch content from a URL. Returns the response body as text. Use for reading web pages, APIs, or downloading data.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "The URL to fetch"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["GET", "POST", "PUT", "DELETE"],
+              "description": "HTTP method (default: GET)"
+            },
+            "headers": {
+              "type": "object",
+              "description": "Optional HTTP headers as key-value pairs"
+            },
+            "body": {
+              "type": "string",
+              "description": "Optional request body (for POST/PUT)"
+            }
+          },
+          "required": ["url"]
+        }
       }
     ],
     "messages": [
@@ -391,7 +418,231 @@ if [ "$TOOL_NAME" = "query_database" ]; then
     RESULT=$(psql -d "$DB" -c "$QUERY" --csv 2>&1)
   fi
 fi
+
+# When Claude calls "web_fetch":
+if [ "$TOOL_NAME" = "web_fetch" ]; then
+  URL=$(echo "$TOOL_INPUT" | jq -r '.url')
+  METHOD=$(echo "$TOOL_INPUT" | jq -r '.method // "GET"')
+  BODY=$(echo "$TOOL_INPUT" | jq -r '.body // empty')
+
+  # Build curl flags
+  CURL_FLAGS="-s -L --max-time 30 -X $METHOD"
+
+  # Add headers if provided
+  HEADERS=$(echo "$TOOL_INPUT" | jq -r '.headers // {} | to_entries[] | "-H \"\(.key): \(.value)\""')
+  if [ -n "$HEADERS" ]; then
+    CURL_FLAGS="$CURL_FLAGS $HEADERS"
+  fi
+
+  # Add body if provided
+  if [ -n "$BODY" ]; then
+    CURL_FLAGS="$CURL_FLAGS -d '$BODY'"
+  fi
+
+  RESULT=$(eval curl $CURL_FLAGS "$URL" 2>&1)
+
+  # Truncate large responses
+  if [ ${#RESULT} -gt 50000 ]; then
+    RESULT="${RESULT:0:50000}... [truncated]"
+  fi
+fi
 ```
+
+---
+
+## Web Fetch Tool
+
+One of the biggest advantages of running outside containers is **full network access**. A `web_fetch` tool lets Claude read web pages, call APIs, and download data — impossible inside Anthropic's sandboxed containers.
+
+### Standalone Web Fetch Request
+
+```bash
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250514",
+    "max_tokens": 4096,
+    "tools": [
+      {
+        "name": "web_fetch",
+        "description": "Fetch content from a URL. Returns the response body as text. Use for reading web pages, calling REST APIs, or downloading data.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "description": "The URL to fetch"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["GET", "POST", "PUT", "DELETE"],
+              "description": "HTTP method (default: GET)"
+            },
+            "headers": {
+              "type": "object",
+              "description": "Optional HTTP headers as key-value pairs"
+            },
+            "body": {
+              "type": "string",
+              "description": "Optional request body (for POST/PUT)"
+            }
+          },
+          "required": ["url"]
+        }
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "Fetch the latest exchange rates from https://api.exchangerate-api.com/v4/latest/USD and tell me the EUR and GBP rates."
+      }
+    ]
+  }'
+```
+
+### Claude's Response
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "I'll fetch the latest exchange rates for you."
+    },
+    {
+      "type": "tool_use",
+      "id": "toolu_01BBB",
+      "name": "web_fetch",
+      "input": {
+        "url": "https://api.exchangerate-api.com/v4/latest/USD",
+        "method": "GET"
+      }
+    }
+  ],
+  "stop_reason": "tool_use"
+}
+```
+
+### Implementing Web Fetch
+
+```bash
+execute_web_fetch() {
+  local url="$1"
+  local method="${2:-GET}"
+  local headers="$3"
+  local body="$4"
+
+  # Build curl command
+  local cmd="curl -s -L --max-time 30 -X $method"
+
+  # Add custom headers
+  if [ -n "$headers" ] && [ "$headers" != "null" ]; then
+    while IFS= read -r header; do
+      cmd="$cmd -H '$header'"
+    done < <(echo "$headers" | jq -r 'to_entries[] | "\(.key): \(.value)"')
+  fi
+
+  # Add body for POST/PUT
+  if [ -n "$body" ] && [ "$body" != "null" ]; then
+    cmd="$cmd -d '$body'"
+  fi
+
+  cmd="$cmd '$url'"
+
+  # Execute and capture response
+  local result
+  result=$(eval $cmd 2>&1)
+  local exit_code=$?
+
+  if [ $exit_code -ne 0 ]; then
+    echo "Error: curl failed with exit code $exit_code: $result"
+    return 1
+  fi
+
+  # Truncate large responses to avoid token overflow
+  if [ ${#result} -gt 50000 ]; then
+    result="${result:0:50000}... [truncated, ${#result} bytes total]"
+  fi
+
+  echo "$result"
+}
+
+# Usage in the agentic loop dispatcher:
+# web_fetch)
+#   URL=$(echo "$TOOL_INPUT" | jq -r '.url')
+#   METHOD=$(echo "$TOOL_INPUT" | jq -r '.method // "GET"')
+#   HEADERS=$(echo "$TOOL_INPUT" | jq -c '.headers // null')
+#   BODY=$(echo "$TOOL_INPUT" | jq -r '.body // null')
+#   RESULT=$(execute_web_fetch "$URL" "$METHOD" "$HEADERS" "$BODY")
+#   ;;
+```
+
+### URL Allow-List (Security)
+
+Restrict which URLs Claude can fetch to prevent SSRF attacks:
+
+```bash
+ALLOWED_DOMAINS="api.exchangerate-api.com api.github.com jsonplaceholder.typicode.com"
+
+validate_url() {
+  local url="$1"
+  local domain=$(echo "$url" | sed -E 's|^https?://([^/]+).*|\1|')
+
+  for allowed in $ALLOWED_DOMAINS; do
+    if [ "$domain" = "$allowed" ]; then
+      return 0
+    fi
+  done
+
+  echo "Error: Domain '$domain' is not in the allow-list"
+  return 1
+}
+```
+
+### Practical Example: API-Driven Workflows
+
+```bash
+# Claude can fetch data, analyze it, and take action — all outside containers
+curl https://api.anthropic.com/v1/messages \
+  -H "x-api-key: $ANTHROPIC_API_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250514",
+    "max_tokens": 4096,
+    "tools": [
+      {"type": "bash_20250124", "name": "bash"},
+      {"type": "text_editor_20250728", "name": "str_replace_based_edit_tool"},
+      {
+        "name": "web_fetch",
+        "description": "Fetch content from a URL. Returns response body as text.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "url": {"type": "string", "description": "URL to fetch"},
+            "method": {"type": "string", "enum": ["GET", "POST", "PUT", "DELETE"]},
+            "headers": {"type": "object", "description": "HTTP headers"},
+            "body": {"type": "string", "description": "Request body"}
+          },
+          "required": ["url"]
+        }
+      }
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "Fetch the open issues from the GitHub API for the repo octocat/Hello-World, then create a summary report at /tmp/issues-report.md"
+      }
+    ]
+  }'
+```
+
+Claude will:
+1. Use `web_fetch` to call `https://api.github.com/repos/octocat/Hello-World/issues`
+2. Parse the JSON response
+3. Use `text_editor` to create a summary report at `/tmp/issues-report.md`
 
 ---
 

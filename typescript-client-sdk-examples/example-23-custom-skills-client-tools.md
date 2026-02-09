@@ -407,6 +407,34 @@ const message = await client.messages.create({
         required: ["query", "database"],
       },
     },
+    {
+      name: "web_fetch",
+      description:
+        "Fetch content from a URL. Returns the response body as text. Use for reading web pages, APIs, or downloading data.",
+      input_schema: {
+        type: "object" as const,
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to fetch",
+          },
+          method: {
+            type: "string",
+            enum: ["GET", "POST", "PUT", "DELETE"],
+            description: "HTTP method (default: GET)",
+          },
+          headers: {
+            type: "object",
+            description: "Optional HTTP headers as key-value pairs",
+          },
+          body: {
+            type: "string",
+            description: "Optional request body (for POST/PUT)",
+          },
+        },
+        required: ["url"],
+      },
+    },
   ],
   messages: [
     {
@@ -510,7 +538,226 @@ function executeQueryDatabase(input: {
     return `Error: ${error.stderr || error.message}`;
   }
 }
+
+async function executeWebFetch(input: {
+  url: string;
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+}): Promise<string> {
+  const { url, method = "GET", headers = {}, body } = input;
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: body || undefined,
+      signal: AbortSignal.timeout(30000),
+    });
+
+    const text = await response.text();
+
+    // Truncate large responses to avoid token overflow
+    if (text.length > 50000) {
+      return text.slice(0, 50000) + `... [truncated, ${text.length} bytes total]`;
+    }
+
+    return text;
+  } catch (error: any) {
+    return `Error: ${error.message}`;
+  }
+}
 ```
+
+---
+
+## Web Fetch Tool
+
+One of the biggest advantages of running outside containers is **full network access**. A `web_fetch` tool lets Claude read web pages, call APIs, and download data — impossible inside Anthropic's sandboxed containers.
+
+### Standalone Web Fetch Request
+
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 4096,
+  tools: [
+    {
+      name: "web_fetch",
+      description:
+        "Fetch content from a URL. Returns the response body as text. Use for reading web pages, calling REST APIs, or downloading data.",
+      input_schema: {
+        type: "object" as const,
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to fetch",
+          },
+          method: {
+            type: "string",
+            enum: ["GET", "POST", "PUT", "DELETE"],
+            description: "HTTP method (default: GET)",
+          },
+          headers: {
+            type: "object",
+            description: "Optional HTTP headers as key-value pairs",
+          },
+          body: {
+            type: "string",
+            description: "Optional request body (for POST/PUT)",
+          },
+        },
+        required: ["url"],
+      },
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "Fetch the latest exchange rates from https://api.exchangerate-api.com/v4/latest/USD and tell me the EUR and GBP rates.",
+    },
+  ],
+});
+```
+
+### Claude's Response
+
+```json
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "I'll fetch the latest exchange rates for you."
+    },
+    {
+      "type": "tool_use",
+      "id": "toolu_01BBB",
+      "name": "web_fetch",
+      "input": {
+        "url": "https://api.exchangerate-api.com/v4/latest/USD",
+        "method": "GET"
+      }
+    }
+  ],
+  "stop_reason": "tool_use"
+}
+```
+
+### Implementing Web Fetch
+
+```typescript
+async function executeWebFetch(input: {
+  url: string;
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+}): Promise<string> {
+  const { url, method = "GET", headers = {}, body } = input;
+
+  try {
+    const response = await fetch(url, {
+      method,
+      headers,
+      body: body || undefined,
+      signal: AbortSignal.timeout(30000),
+    });
+
+    const text = await response.text();
+
+    // Truncate large responses to avoid token overflow
+    if (text.length > 50000) {
+      return text.slice(0, 50000) + `... [truncated, ${text.length} bytes total]`;
+    }
+
+    return text;
+  } catch (error: any) {
+    return `Error: ${error.message}`;
+  }
+}
+```
+
+### URL Allow-List (Security)
+
+Restrict which URLs Claude can fetch to prevent SSRF attacks:
+
+```typescript
+const ALLOWED_DOMAINS = new Set([
+  "api.exchangerate-api.com",
+  "api.github.com",
+  "jsonplaceholder.typicode.com",
+]);
+
+function validateUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    if (!ALLOWED_DOMAINS.has(parsed.hostname)) {
+      throw new Error(`Domain '${parsed.hostname}' is not in the allow-list`);
+    }
+    return true;
+  } catch (error: any) {
+    throw new Error(`Invalid URL: ${error.message}`);
+  }
+}
+
+// Use in your executor:
+async function executeWebFetchSafe(input: {
+  url: string;
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+}): Promise<string> {
+  try {
+    validateUrl(input.url);
+  } catch (error: any) {
+    return error.message;
+  }
+  return executeWebFetch(input);
+}
+```
+
+### Practical Example: API-Driven Workflows
+
+```typescript
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250514",
+  max_tokens: 4096,
+  tools: [
+    { type: "bash_20250124", name: "bash" } as any,
+    { type: "text_editor_20250728", name: "str_replace_based_edit_tool" } as any,
+    {
+      name: "web_fetch",
+      description: "Fetch content from a URL. Returns response body as text.",
+      input_schema: {
+        type: "object" as const,
+        properties: {
+          url: { type: "string", description: "URL to fetch" },
+          method: { type: "string", enum: ["GET", "POST", "PUT", "DELETE"] },
+          headers: { type: "object", description: "HTTP headers" },
+          body: { type: "string", description: "Request body" },
+        },
+        required: ["url"],
+      },
+    },
+  ],
+  messages: [
+    {
+      role: "user",
+      content:
+        "Fetch the open issues from the GitHub API for the repo octocat/Hello-World, then create a summary report at /tmp/issues-report.md",
+    },
+  ],
+});
+```
+
+Claude will:
+1. Use `web_fetch` to call `https://api.github.com/repos/octocat/Hello-World/issues`
+2. Parse the JSON response
+3. Use `text_editor` to create a summary report at `/tmp/issues-report.md`
 
 ---
 
