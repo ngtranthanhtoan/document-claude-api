@@ -638,3 +638,4 @@ ls -la "$FILENAME"
 - [Example 05: Files API](example-05-files-api.md) - File upload and download
 - [Example 13: Agentic Tool Loop](example-13-agentic-tool-loop.md) - Multi-turn tool execution
 - [Example 15: Coding Assistant](example-15-coding-assistant.md) - Code execution patterns
+- [Example 23: Custom Skills & Client-Side Tool Agents](example-23-custom-skills-client-tools.md) - Custom skills deep dive + bash/text_editor outside containers

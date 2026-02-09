@@ -1101,3 +1101,4 @@ main().catch(console.error);
 - [Example 05: Files API](example-05-files-api.md) — File upload, download, and reuse
 - [Example 19: Agent Skills](example-19-agent-skills.md) — Skills with container configuration
 - [Example 21: Full-Stack Autonomous Agent](example-21-full-stack-agent.md) — All tools combined
+- [Example 23: Custom Skills & Client-Side Tool Agents](example-23-custom-skills-client-tools.md) — Custom skills deep dive + bash/text_editor outside containers
