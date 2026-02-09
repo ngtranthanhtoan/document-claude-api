@@ -540,12 +540,11 @@ Local Skills bundle instructions, scripts, and resources into a reusable package
 │                                                                   │
 │  2. API CALL                                                      │
 │     system: "You have access to the data-validator skill..."      │
-│     tools: [bash, text_editor]                                    │
+│     tools: [bash]                                                 │
 │     messages: [{ user: "Validate this CSV" }]                     │
 │                                                                   │
 │  3. CLAUDE RESPONDS                                               │
 │     Uses bash to run: python /path/to/skills/data-validator/...   │
-│     Uses text_editor to read/write files                          │
 │                                                                   │
 │  4. YOU EXECUTE on your machine → return tool_result              │
 └─────────────────────────────────────────────────────────────────┘
@@ -616,8 +615,7 @@ Schemas are JSON files in `schemas/`:
 ## Example Workflow
 1. Run validation: `python .../validate.py --input /tmp/data.csv --schema .../schemas/customer.json`
 2. If errors found, generate report: `python .../report.py --results <validation_output>`
-3. Use text_editor to fix the data file if needed
-4. Re-run validation to confirm fixes
+3. Re-run validation to confirm fixes
 ````
 
 ### Skill Loader
@@ -664,7 +662,6 @@ const message = await client.messages.create({
   system: systemPrompt,
   tools: [
     { type: "bash_20250124", name: "bash" } as any,
-    { type: "text_editor_20250728", name: "str_replace_based_edit_tool" } as any,
   ],
   messages: [
     {
@@ -717,13 +714,12 @@ const message = await client.messages.create({
   system: systemPrompt,
   tools: [
     { type: "bash_20250124", name: "bash" } as any,
-    { type: "text_editor_20250728", name: "str_replace_based_edit_tool" } as any,
   ],
   messages: [
     {
       role: "user",
       content:
-        "Validate /tmp/customers.csv, fix any errors, then run the test suite to make sure nothing is broken.",
+        "Validate /tmp/customers.csv, then run the test suite to make sure nothing is broken.",
     },
   ],
 });
