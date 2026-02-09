@@ -734,7 +734,7 @@ export ANTHROPIC_API_KEY="sk-ant-api03-..."
 | 20 | [Deep Agent](typescript-client-sdk-examples/example-20-deep-agent.md) | Orchestrator + typed subagent functions |
 | 21 | [Full-Stack Autonomous Agent](typescript-client-sdk-examples/example-21-full-stack-agent.md) | All tool types + fine-grained streaming |
 | 22 | [VFS, Container & Sandbox](typescript-client-sdk-examples/example-22-virtual-file-system-container-sandbox.md) | Container reuse + `container_upload` + Files API |
-| 23 | [Custom Skills & Client-Side Tool Agents](typescript-client-sdk-examples/example-23-custom-skills-client-tools.md) | Custom skills CRUD + `bash_20250124` + `text_editor_20250728` |
+| 23 | [Custom Tools & Client-Side Agents Outside Containers](typescript-client-sdk-examples/example-23-custom-skills-client-tools.md) | Custom tool definitions + `bash_20250124` + `text_editor_20250728` outside containers |
 
 ---
 

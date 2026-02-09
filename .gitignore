@@ -1,2 +1,4 @@
 code/.env
+code/node_modules/
+code/dist/
 .claude

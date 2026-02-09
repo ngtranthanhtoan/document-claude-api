@@ -1,0 +1,41 @@
+{
+  "name": "claude-api-examples",
+  "version": "1.0.0",
+  "description": "Runnable TypeScript examples for the Anthropic Claude API SDK",
+  "type": "module",
+  "scripts": {
+    "example:01": "tsx src/example-01-structured-output.ts",
+    "example:02": "tsx src/example-02-streaming.ts",
+    "example:03": "tsx src/example-03-pdf-processing.ts",
+    "example:04": "tsx src/example-04-citations.ts",
+    "example:05": "tsx src/example-05-files-api.ts",
+    "example:06": "tsx src/example-06-tool-use-basics.ts",
+    "example:07": "tsx src/example-07-vision-analysis.ts",
+    "example:08": "tsx src/example-08-rag-knowledge-base.ts",
+    "example:09": "tsx src/example-09-batch-processing.ts",
+    "example:10": "tsx src/example-10-data-extraction.ts",
+    "example:11": "tsx src/example-11-customer-support-bot.ts",
+    "example:12": "tsx src/example-12-human-in-the-loop.ts",
+    "example:13": "tsx src/example-13-agentic-tool-loop.ts",
+    "example:14": "tsx src/example-14-research-agent.ts",
+    "example:15": "tsx src/example-15-coding-assistant.ts",
+    "example:16": "tsx src/example-16-mcp-connector.ts",
+    "example:17": "tsx src/example-17-computer-use.ts",
+    "example:18": "tsx src/example-18-memory-tool.ts",
+    "example:19": "tsx src/example-19-agent-skills.ts",
+    "example:20": "tsx src/example-20-deep-agent.ts",
+    "example:21": "tsx src/example-21-full-stack-agent.ts",
+    "example:22": "tsx src/example-22-virtual-file-system-container-sandbox.ts",
+    "all": "tsx src/run-all.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.12.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

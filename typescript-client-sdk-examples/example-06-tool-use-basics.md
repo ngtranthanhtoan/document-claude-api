@@ -944,4 +944,4 @@ const message = await client.messages.create({
 - [Example 13: Agentic Tool Loop](example-13-agentic-tool-loop.md) - Multi-step autonomous agents
 - [Example 12: Human in the Loop](example-12-human-in-the-loop.md) - Add approval for sensitive tools
 - [Example 01: Structured Output](example-01-structured-output.md) - Use tools for structured responses
-- [Example 23: Custom Skills & Client-Side Tool Agents](example-23-custom-skills-client-tools.md) - Custom skills deep dive + bash/text_editor outside containers
+- [Example 23: Custom Tools & Client-Side Agents Outside Containers](example-23-custom-skills-client-tools.md) - Custom tool definitions + bash/text_editor outside containers
